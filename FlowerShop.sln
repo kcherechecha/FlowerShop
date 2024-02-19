@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.DAL", "FlowerShop.DAL\FlowerShop.DAL.csproj", "{F379C656-FCAE-4C92-B2BB-7D78876FC779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.BLL", "FlowerShop.BLL\FlowerShop.BLL.csproj", "{254A9FBA-796A-4440-9095-002C069CB94F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerShop.WebAPI", "FlowerShop.WebAPI\FlowerShop.WebAPI.csproj", "{9C92AE13-1F44-4679-B03F-3296F33EA186}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F379C656-FCAE-4C92-B2BB-7D78876FC779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F379C656-FCAE-4C92-B2BB-7D78876FC779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F379C656-FCAE-4C92-B2BB-7D78876FC779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F379C656-FCAE-4C92-B2BB-7D78876FC779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254A9FBA-796A-4440-9095-002C069CB94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254A9FBA-796A-4440-9095-002C069CB94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254A9FBA-796A-4440-9095-002C069CB94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254A9FBA-796A-4440-9095-002C069CB94F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C92AE13-1F44-4679-B03F-3296F33EA186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C92AE13-1F44-4679-B03F-3296F33EA186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C92AE13-1F44-4679-B03F-3296F33EA186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C92AE13-1F44-4679-B03F-3296F33EA186}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
