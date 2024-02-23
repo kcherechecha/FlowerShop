@@ -3,6 +3,7 @@ using System.Drawing;
 public class Flower
 {
     public Guid Id {get; set;}
+    public byte[]? Photo {get; set;}
     public string? Name {get; set;}
     public string? Description {get; set;}
     public Color Color {get; set;}

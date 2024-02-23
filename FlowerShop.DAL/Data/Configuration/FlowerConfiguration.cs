@@ -13,6 +13,9 @@ public class FlowerConfiguration : IEntityTypeConfiguration<Flower>
         builder.Property(f => f.Name)
             .HasMaxLength(255);
 
+        builder.Property(f => f.Photo)
+            .HasColumnType("bytea");
+
         builder.Property(f => f.Description)
             .HasMaxLength(1000); 
 

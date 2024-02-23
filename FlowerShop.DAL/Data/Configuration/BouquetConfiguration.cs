@@ -12,6 +12,9 @@ public class BouquetConfiguration : IEntityTypeConfiguration<Bouquet>
         builder.Property(b => b.Name)
             .HasMaxLength(255);
 
+        builder.Property(b => b.Photo)
+            .HasColumnType("bytea");
+
         builder.Property(b => b.Price)
             .IsRequired();
 
