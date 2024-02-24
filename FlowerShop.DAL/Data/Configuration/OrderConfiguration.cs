@@ -10,7 +10,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasKey(o => o.OrderId);
 
         builder.Property(o => o.OrderAddress)
-            .HasMaxLength(255); 
+            .HasMaxLength(255);
+
+        builder.Property(o => o.OrderPrice)
+            .IsRequired();
 
         builder.Property(o => o.OrderTime)
             .IsRequired();
@@ -23,10 +26,5 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(o => o.OrderStatusId)
             .IsRequired();
-        
-        builder.HasOne(o => o.Basket)
-            .WithOne(b => b.Order)
-            .HasForeignKey<Basket>(b => b.Id)
-            .OnDelete(DeleteBehavior.Restrict); 
     }
 }

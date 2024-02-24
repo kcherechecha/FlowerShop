@@ -27,10 +27,5 @@ public class BouquetConfiguration : IEntityTypeConfiguration<Bouquet>
             .WithOne(bw => bw.Bouquet)
             .HasForeignKey(bw => bw.BouquetId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(b => b.BouquetBaskets)
-            .WithOne(bb => bb.Bouquet)
-            .HasForeignKey(bb => bb.BouquetId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }
