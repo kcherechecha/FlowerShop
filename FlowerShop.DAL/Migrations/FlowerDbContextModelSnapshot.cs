@@ -21,19 +21,6 @@ namespace FlowerShop.DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Basket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Baskets", (string)null);
-                });
-
             modelBuilder.Entity("Bouquet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -53,21 +40,6 @@ namespace FlowerShop.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bouquets", (string)null);
-                });
-
-            modelBuilder.Entity("BouquetBasket", b =>
-                {
-                    b.Property<Guid>("BasketId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BouquetId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("BasketId", "BouquetId");
-
-                    b.HasIndex("BouquetId");
-
-                    b.ToTable("BouquetBaskets", (string)null);
                 });
 
             modelBuilder.Entity("BouquetWishlist", b =>
@@ -153,6 +125,27 @@ namespace FlowerShop.DAL.Migrations
                     b.ToTable("FlowerBouquets", (string)null);
                 });
 
+            modelBuilder.Entity("FlowerShop.DAL.Entities.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Items", (string)null);
+                });
+
             modelBuilder.Entity("Order", b =>
                 {
                     b.Property<Guid>("OrderId")
@@ -165,6 +158,9 @@ namespace FlowerShop.DAL.Migrations
                     b.Property<string>("OrderAddress")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<decimal>("OrderPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("integer");
@@ -211,36 +207,6 @@ namespace FlowerShop.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Wishlists", (string)null);
-                });
-
-            modelBuilder.Entity("Basket", b =>
-                {
-                    b.HasOne("Order", "Order")
-                        .WithOne("Basket")
-                        .HasForeignKey("Basket", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("BouquetBasket", b =>
-                {
-                    b.HasOne("Basket", "Basket")
-                        .WithMany("BouquetBaskets")
-                        .HasForeignKey("BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bouquet", "Bouquet")
-                        .WithMany("BouquetBaskets")
-                        .HasForeignKey("BouquetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Basket");
-
-                    b.Navigation("Bouquet");
                 });
 
             modelBuilder.Entity("BouquetWishlist", b =>
@@ -292,15 +258,8 @@ namespace FlowerShop.DAL.Migrations
                     b.Navigation("OrderStatus");
                 });
 
-            modelBuilder.Entity("Basket", b =>
-                {
-                    b.Navigation("BouquetBaskets");
-                });
-
             modelBuilder.Entity("Bouquet", b =>
                 {
-                    b.Navigation("BouquetBaskets");
-
                     b.Navigation("BouquetWishlists");
 
                     b.Navigation("FlowerBouquets");
@@ -309,11 +268,6 @@ namespace FlowerShop.DAL.Migrations
             modelBuilder.Entity("Flower", b =>
                 {
                     b.Navigation("FlowerBouquets");
-                });
-
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.Navigation("Basket");
                 });
 
             modelBuilder.Entity("Wishlist", b =>
