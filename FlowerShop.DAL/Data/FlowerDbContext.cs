@@ -1,29 +1,38 @@
+using FlowerShop.DAL.Entities;
+using FlowerShop.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-
-public class FlowerDbContext : DbContext, IFlowerDbContext
+namespace FlowerShop.DAL.Data
 {
-    public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options) { }
-
-    public DbSet<Bouquet> Bouquets => Set<Bouquet>();
-
-    public DbSet<BouquetWishlist> BouquetWishlists => Set<BouquetWishlist>();
-
-    public DbSet<Flower> Flowers => Set<Flower>();
-
-    public DbSet<FlowerBouquet> FlowerBouquets => Set<FlowerBouquet>();
-
-    public DbSet<Order> Orders => Set<Order>();
-
-    public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
-
-    public DbSet<Wishlist> Wishlists => Set<Wishlist>();
-
-    protected override void OnModelCreating(ModelBuilder builder)
+    public class FlowerDbContext : DbContext, IFlowerDbContext
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options) { }
 
-        base.OnModelCreating(builder);
+        
+
+        public DbSet<Order> Orders => Set<Order>();
+
+        public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
+
+        public DbSet<Wishlist> Wishlists => Set<Wishlist>();
+
+        public DbSet<Category> Categories => Set<Category>();
+
+        public DbSet<CustomBouquet> CustomBouquets => Set<CustomBouquet>();
+
+        public DbSet<Item> Items => Set<Item>();
+
+        public DbSet<ItemOrder> ItemOrders => Set<ItemOrder>();
+
+        public DbSet<ItemWishlist> ItemWishlists => Set<ItemWishlist>();
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(builder);
+        }
     }
 }

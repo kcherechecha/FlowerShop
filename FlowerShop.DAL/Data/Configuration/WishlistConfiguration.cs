@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using FlowerShop.DAL.Entities;
 
 namespace FlowerShop.DAL.Data.Configuration
 {
