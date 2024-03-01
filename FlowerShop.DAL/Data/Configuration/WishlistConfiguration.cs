@@ -1,20 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-public class WishlistConfiguration : IEntityTypeConfiguration<Wishlist>
+namespace FlowerShop.DAL.Data.Configuration
 {
-    public void Configure(EntityTypeBuilder<Wishlist> builder)
+    public class WishlistConfiguration : IEntityTypeConfiguration<Wishlist>
     {
-        builder.ToTable("Wishlists");
+        public void Configure(EntityTypeBuilder<Wishlist> builder)
+        {
+            builder.ToTable("Wishlists");
 
-        builder.HasKey(w => w.Id);
+            builder.HasKey(w => w.UserId);
 
-        builder.Property(w => w.UserId)
-            .IsRequired();
+            builder.Property(w => w.UserId)
+                .IsRequired();
 
-        builder.HasMany(w => w.BouquetWishlists)
-            .WithOne(bw => bw.Wishlist)
-            .HasForeignKey(bw => bw.WishlistId)
-            .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(w => w.ItemWishlists)
+                .WithOne(bw => bw.Wishlist)
+                .HasForeignKey(bw => bw.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

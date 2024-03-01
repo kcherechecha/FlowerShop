@@ -1,15 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-public class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
+namespace FlowerShop.DAL.Data.Configuration
 {
-    public void Configure(EntityTypeBuilder<OrderStatus> builder)
+    public class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
     {
-        builder.ToTable("OrderStatuses");
+        public void Configure(EntityTypeBuilder<OrderStatus> builder)
+        {
+            builder.ToTable("OrderStatuses");
 
-        builder.HasKey(os => os.Id);
+            builder.HasKey(os => os.Id);
 
-        builder.Property(os => os.Name)
-            .HasMaxLength(255); 
+            builder.Property(os => os.Id)
+                .IsRequired();
+
+            builder.Property(os => os.Name)
+                .HasMaxLength(255);
+
+            builder.HasMany(os => os.Orders)
+                .WithOne(o => o.OrderStatus)
+                .HasForeignKey(o => o.OrderStatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

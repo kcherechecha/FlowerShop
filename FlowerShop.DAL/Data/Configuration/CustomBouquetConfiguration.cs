@@ -1,24 +1,27 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-public class CustomBouquetConfiguration : IEntityTypeConfiguration<CustomBouquet>
+namespace FlowerShop.DAL.Data.Configuration
 {
-    public void Configure(EntityTypeBuilder<CustomBouquet> builder)
+    public class CustomBouquetConfiguration : IEntityTypeConfiguration<CustomBouquet>
     {
-        builder.ToTable("CustomBouquets");
+        public void Configure(EntityTypeBuilder<CustomBouquet> builder)
+        {
+            builder.ToTable("CustomBouquets");
 
-        builder.HasKey(c => c.Id);
+            builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.Photo)
-            .HasColumnType("bytea");
+            builder.Property(c => c.Photo)
+                .HasColumnType("bytea");
 
-        builder.Property(c => c.UserId)
-            .IsRequired();
+            builder.Property(c => c.UserId)
+                .IsRequired();
 
-        builder.Property(c => c.UserDescription)
-            .HasMaxLength(1000);
+            builder.Property(c => c.UserDescription)
+                .HasMaxLength(1000);
 
-        builder.Property(c => c.RequestTime)
-            .IsRequired();
+            builder.Property(c => c.RequestTime)
+                .IsRequired();
+        }
     }
 }
