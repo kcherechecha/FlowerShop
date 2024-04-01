@@ -10,13 +10,14 @@ namespace FlowerShop.BLL.Models
     public class OrderModel
     {
         public const int MaxAdressLenght = 255;
-        private OrderModel(Guid id, string? orderAddress, decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
+        private OrderModel(Guid id, string? orderAddress, decimal orderPrice, DateTime orderTime, Guid userId, string orderStatusName, int orderStatusId)
         {
             Id = id;
             OrderAddress = orderAddress;
             OrderPrice = orderPrice;
             OrderTime = orderTime;
             UserId = userId;
+            OrderStatusName = orderStatusName;
             OrderStatusId = orderStatusId;
         }
 
@@ -26,9 +27,10 @@ namespace FlowerShop.BLL.Models
         public DateTime OrderTime { get; }
         public Guid UserId { get; }
         public int OrderStatusId { get; }
+        public string OrderStatusName { get; }
 
         public static (OrderModel, string Error) Create(Guid id, string? orderAddress, 
-            decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
+            decimal orderPrice, DateTime orderTime, Guid userId, string orderStatusName, int orderStatusId)
         {
             var error = string.Empty;
 
@@ -52,12 +54,7 @@ namespace FlowerShop.BLL.Models
                 error = "Order User Id error";
             }
 
-            if (!new[] { 1, 2, 3, 4, 5 }.Contains(orderStatusId))
-            {
-                error = "Order StatusOrder Id error";
-            }
-
-            var order = new OrderModel(id, orderAddress, orderPrice, orderTime, userId, orderStatusId);
+            var order = new OrderModel(id, orderAddress, orderPrice, orderTime, userId, orderStatusName, orderStatusId);
 
             return (order, error);
         }
