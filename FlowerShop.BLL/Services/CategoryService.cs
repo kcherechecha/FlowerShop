@@ -1,6 +1,9 @@
-﻿using FlowerShop.BLL.Interfaces.Services;
+﻿using AutoMapper;
+using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.DAL.Data;
+using FlowerShop.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,35 +15,55 @@ namespace FlowerShop.BLL.Services
     public class CategoryService : ICategoryService
     {
         private readonly FlowerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoryService(FlowerDbContext context)
+        public CategoryService(FlowerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public Task<Guid> AddAsync(CategoryModel model)
+        public async Task<Guid> AddAsync(CategoryModel model)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Category>(model);
+
+            await _context.Categories.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return entity.Id;
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = new Category { Id = id };
+
+            _context.Categories.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<CategoryModel>> GetAll()
+        public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var entities = await _context.Categories.ToListAsync();
+
+            var models = _mapper.Map<IEnumerable<CategoryModel>>(entities);
+
+            return models;
         }
 
-        public Task<IEnumerable<CategoryModel>> GetAllAsync()
+        public async Task<CategoryModel> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Categories.FindAsync(id);
+
+            var model = _mapper.Map<CategoryModel>(entity);
+
+            return model;
         }
 
-        public Task UpdateAsync(CategoryModel model)
+        public async Task UpdateAsync(CategoryModel model)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Category>(model);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

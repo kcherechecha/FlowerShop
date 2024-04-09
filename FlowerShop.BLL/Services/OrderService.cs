@@ -20,12 +20,12 @@ namespace FlowerShop.BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrderModel>> GetAll()
+        public Task<IEnumerable<OrderModel>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrderModel>> GetAllAsync()
+        public Task<OrderModel> GetById(Guid id)
         {
             throw new NotImplementedException();
         }

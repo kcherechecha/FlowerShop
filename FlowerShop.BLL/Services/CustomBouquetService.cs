@@ -1,5 +1,9 @@
-﻿using FlowerShop.BLL.Interfaces.Services;
+﻿using AutoMapper;
+using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
+using FlowerShop.DAL.Data;
+using FlowerShop.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +14,56 @@ namespace FlowerShop.BLL.Services
 {
     public class CustomBouquetService : ICustomBouquetService
     {
-        public Task<Guid> AddAsync(CustomBouquetModel model)
+        private readonly FlowerDbContext _context;
+        private readonly IMapper _mapper;
+
+        public CustomBouquetService(FlowerDbContext context, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _mapper = mapper;
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task<Guid> AddAsync(CustomBouquetModel model)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<CustomBouquet>(model);
+
+            await _context.CustomBouquets.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return entity.Id;
         }
 
-        public Task<IEnumerable<CustomBouquetModel>> GetAll()
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = new CustomBouquet() { Id = id };
+
+            _context.CustomBouquets.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<CustomBouquetModel>> GetAllAsync()
+        public async Task<IEnumerable<CustomBouquetModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var entities = await _context.CustomBouquets.ToListAsync();
+
+            var models = _mapper.Map<IEnumerable<CustomBouquetModel>>(entities);
+
+            return models;
         }
 
-        public Task UpdateAsync(CustomBouquetModel model)
+        public async Task<CustomBouquetModel> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.CustomBouquets.FindAsync(id);
+
+            var models = _mapper.Map<CustomBouquetModel>(entity);
+
+            return models;
+        }
+
+        public async Task UpdateAsync(CustomBouquetModel model)
+        {
+            var entity = _mapper.Map<CustomBouquet>(model);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
