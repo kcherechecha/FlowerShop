@@ -4,11 +4,6 @@ using FlowerShop.BLL.Models;
 using FlowerShop.DAL.Data;
 using FlowerShop.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlowerShop.BLL.Services
 {
@@ -61,7 +56,10 @@ namespace FlowerShop.BLL.Services
 
         public async Task UpdateAsync(CategoryModel model)
         {
-            var entity = _mapper.Map<Category>(model);
+            var entity = await _context.Categories
+                .Where(e => e.Id == model.Id)
+                .ExecuteUpdateAsync(e => e
+                .SetProperty(p => p.Name, model.Name));
 
             await _context.SaveChangesAsync();
         }

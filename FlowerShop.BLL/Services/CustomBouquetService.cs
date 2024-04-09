@@ -61,7 +61,10 @@ namespace FlowerShop.BLL.Services
 
         public async Task UpdateAsync(CustomBouquetModel model)
         {
-            var entity = _mapper.Map<CustomBouquet>(model);
+            var entity = await _context.CustomBouquets
+                .Where(e => e.Id == model.Id)
+                .ExecuteUpdateAsync(e => e
+                .SetProperty(p => p.UserDescription, model.UserDescription));
 
             await _context.SaveChangesAsync();
         }
