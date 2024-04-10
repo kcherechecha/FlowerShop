@@ -9,5 +9,7 @@ namespace FlowerShop.BLL.Interfaces.Services
 {
     public interface IItemService : ICrud<ItemModel>
     {
+        Task AddItemToWishlist(Guid itemId, Guid userId);
+        Task DeleteItemFromWishlist(Guid itemId, Guid userId);
     }
 }

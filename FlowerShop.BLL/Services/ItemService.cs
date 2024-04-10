@@ -68,5 +68,41 @@ namespace FlowerShop.BLL.Services
 
             await _context.SaveChangesAsync(); 
         }
+
+        public async Task<IEnumerable<ItemModel>> GetWishlistItem(Guid UserId)
+        {
+            var entities = await _context.Items
+                                .Include(e => e.ItemWishlists)
+                                .Where(e => e.ItemWishlists.Any(x => x.UserId == UserId))
+                                .ToListAsync();
+
+            var models = _mapper.Map<IEnumerable<ItemModel>>(entities);
+
+            return models;
+        }
+
+        public async Task AddItemToWishlist(Guid itemId, Guid userId)
+        {
+            var itemWishlistEntity = new ItemWishlist()
+            {
+                ItemId = itemId,
+                UserId = userId
+            };
+
+            await _context.ItemWishlists.AddAsync(itemWishlistEntity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteItemFromWishlist(Guid itemId, Guid userId)
+        {
+            var itemWishlistEntity = new ItemWishlist()
+            {
+                ItemId = itemId,
+                UserId = userId
+            };
+
+            _context.ItemWishlists.Remove(itemWishlistEntity);
+            await _context.SaveChangesAsync();
+        }
     }
 }
