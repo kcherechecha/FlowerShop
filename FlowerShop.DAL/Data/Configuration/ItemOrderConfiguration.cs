@@ -12,6 +12,12 @@ namespace FlowerShop.DAL.Data.Configuration
 
             builder.HasKey(io => io.Id);
 
+            builder.Property(io => io.ItemCount)
+                .IsRequired();
+
+            builder.Property(io => io.UserId) 
+                .IsRequired();
+
             builder.HasOne(io => io.Order)
                 .WithMany(o => o.ItemOrders)
                 .HasForeignKey(io => io.OrderId)
