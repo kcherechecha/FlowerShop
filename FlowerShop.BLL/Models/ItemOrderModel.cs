@@ -8,19 +8,28 @@ namespace FlowerShop.BLL.Models
 {
     public class ItemOrderModel
     {
-        private ItemOrderModel(Guid orderId, Guid itemId)
+        private ItemOrderModel(Guid orderId, Guid itemId, Guid id, int itemCount)
         {
             OrderId = orderId;
             ItemId = itemId;
+            Id = id;
+            ItemCount = itemCount;
         }
+        public Guid Id { get; }
         public Guid OrderId { get; }
         public Guid ItemId { get; }
+        public int ItemCount { get; }
 
-        public static (ItemOrderModel, string Error) Create(Guid orderId, Guid itemId)
+        public static (ItemOrderModel, string Error) Create(Guid id, Guid orderId, Guid itemId, int itemCount)
         {
             var error = string.Empty;
 
-            if(orderId == Guid.Empty)
+            if (id == Guid.Empty)
+            {
+                error = "ItemOrder Order Id error";
+            }
+
+            if (orderId == Guid.Empty)
             {
                 error = "ItemOrder Order Id error";
             }
@@ -30,7 +39,12 @@ namespace FlowerShop.BLL.Models
                 error = "ItemOrder Item Id error";
             }
 
-            var itemOrder = new ItemOrderModel(orderId, itemId);
+            if(itemCount < 1)
+            {
+                error = "ItemOrder count less than one";
+            }
+
+            var itemOrder = new ItemOrderModel(id, orderId, itemId, itemCount);
 
             return (itemOrder, error);
         }
