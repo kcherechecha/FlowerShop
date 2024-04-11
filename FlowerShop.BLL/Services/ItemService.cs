@@ -104,5 +104,50 @@ namespace FlowerShop.BLL.Services
             _context.ItemWishlists.Remove(itemWishlistEntity);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ItemModel>> GetItemInBasket(Guid UserId)
+        {
+            var entities = await _context.Items
+                                .Include(e => e.ItemWishlists)
+                                .Where(e => e.ItemOrders.Any(x => x.UserId == UserId && x.OrderId == null))
+                                .ToListAsync();
+
+            var models = _mapper.Map<IEnumerable<ItemModel>>(entities);
+
+            return models;
+        }
+
+        public async Task<Guid> AddItemToBasket(Guid itemId, Guid userId, int itemCount)
+        {
+            var itemOrder = new ItemOrder()
+            {
+                ItemId = itemId,
+                ItemCount = itemCount,
+            };
+
+            await _context.ItemOrders.AddAsync(itemOrder);
+            await _context.SaveChangesAsync();
+
+            return itemOrder.Id;
+        }
+
+        public async Task DeleteItemFromBasket(Guid id)
+        {
+            var itemOrder = new ItemOrder() { Id = id };
+
+            await _context.ItemOrders.AddAsync(itemOrder);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateItemCountInBasket(Guid id, int count)
+        {
+            var entity = await _context.ItemOrders
+                .Where(e => e.Id == id)
+                .ExecuteUpdateAsync(e => e
+                .SetProperty(p => p.ItemCount, count));
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
