@@ -12,7 +12,7 @@ namespace FlowerShop.BLL.Models
         public const int MaxNameLenght = 255;
         public const int MaxUserDescriptionLenght = 1000;
 
-        private ItemModel(Guid id, string? name, byte[]? photo, string? description, decimal price, Guid categoryId, string categoryName)
+        private ItemModel(Guid id, string? name, byte[]? photo, string? description, decimal price, Guid categoryId)
         {
             Id = id;
             Name = name;
@@ -20,7 +20,6 @@ namespace FlowerShop.BLL.Models
             Description = description;
             Price = price;
             CategoryId = categoryId;
-            CategoryName = categoryName;
         }
 
         public Guid Id { get; }
@@ -29,10 +28,10 @@ namespace FlowerShop.BLL.Models
         public string? Description { get; }
         public decimal Price { get; }
         public Guid CategoryId { get; }
-        public string CategoryName { get; }
+        public CategoryModel Category { get; }
 
         public static (ItemModel, string Error) Create(Guid id, string? name, byte[]? photo, 
-            string? description, decimal price, Guid categoryId, string categoryName)
+            string? description, decimal price, Guid categoryId)
         {
             var error = string.Empty;
 
@@ -66,7 +65,7 @@ namespace FlowerShop.BLL.Models
                 error = "Item Category Id";
             }
 
-            var item = new ItemModel(id, name, photo, description, price, categoryId, categoryName);
+            var item = new ItemModel(id, name, photo, description, price, categoryId);
 
             return (item, error);
         }
