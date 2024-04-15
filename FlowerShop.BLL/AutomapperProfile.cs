@@ -19,9 +19,9 @@ namespace FlowerShop.BLL
             CreateMap<CustomBouquet, CustomBouquetModel>() 
                 .ReverseMap();
 
-            CreateMap<Item, ItemModel>()
-                .ForMember(im => im.CategoryName, i => i.MapFrom(x => x.Category.Name))
-                .ReverseMap();
+            CreateMap<Item, ItemModel>();
+
+            CreateMap<ItemModel, Item>();
 
             CreateMap<ItemOrder, ItemOrderModel>()
                 .ReverseMap();
