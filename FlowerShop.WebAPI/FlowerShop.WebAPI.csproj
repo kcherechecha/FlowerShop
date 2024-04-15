@@ -11,6 +11,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FlowerShop.BLL\FlowerShop.BLL.csproj" />
     <ProjectReference Include="..\FlowerShop.DAL\FlowerShop.DAL.csproj" />
   </ItemGroup>
 </Project>
