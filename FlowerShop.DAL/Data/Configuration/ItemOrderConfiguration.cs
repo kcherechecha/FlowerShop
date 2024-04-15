@@ -10,12 +10,19 @@ namespace FlowerShop.DAL.Data.Configuration
         {
             builder.ToTable("ItemOrders");
 
-            builder.HasKey(io => new { io.OrderId, io.ItemId });
+            builder.HasKey(io => io.Id);
+
+            builder.Property(io => io.ItemCount)
+                .IsRequired();
+
+            builder.Property(io => io.UserId) 
+                .IsRequired();
 
             builder.HasOne(io => io.Order)
                 .WithMany(o => o.ItemOrders)
                 .HasForeignKey(io => io.OrderId)
-                .OnDelete(DeleteBehavior.SetNull); 
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false); 
 
             builder.HasOne(io => io.Item)
                 .WithMany(i => i.ItemOrders)
