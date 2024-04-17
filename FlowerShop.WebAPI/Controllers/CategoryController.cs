@@ -70,8 +70,8 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Remove(Guid id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Remove([FromRoute] Guid id)
         {
             if(id == Guid.Empty)
             {

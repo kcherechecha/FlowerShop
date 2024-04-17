@@ -31,7 +31,7 @@ namespace FlowerShop.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomBouquetVm>> GetById(Guid id)
+        public async Task<ActionResult<CustomBouquetVm>> GetById([FromRoute] Guid id)
         {
             var model = await _customBouquetService.GetById(id);
 
