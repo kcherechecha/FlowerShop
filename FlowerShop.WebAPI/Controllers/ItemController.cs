@@ -3,7 +3,9 @@ using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.BLL.Models.InputModels;
 using FlowerShop.BLL.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FlowerShop.WebAPI.Controllers
 {
@@ -40,8 +42,8 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(item);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Add(ItemInputModel input)
+        [HttpPost, Authorize(Roles = "Admin")]
+        public async Task<ActionResult<Guid>> Add([FromForm] ItemInputModel input)
         {
             var model = await ItemModel.Create(input.Id, input.Name, input.Photo, input.Description, input.Price, input.CategoryId);
 
@@ -55,7 +57,7 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
             if(id == Guid.Empty)
@@ -68,8 +70,8 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(ItemInputModel input)
+        [HttpPut, Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Update([FromForm] ItemInputModel input)
         {
             var model = await ItemModel.Create(input.Id, input.Name, input.Photo, input.Description, input.Price, input.CategoryId);
 
@@ -83,9 +85,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("wishlist/{userId}")]
-        public async Task<ActionResult<IEnumerable<ItemListVm>>> GetItemInWishlist([FromRoute] Guid userId)
+        [HttpGet("wishlist/user"), Authorize]
+        public async Task<ActionResult<IEnumerable<ItemListVm>>> GetItemInWishlist()
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             var models = await _itemService.GetWishlistItem(userId);
 
             var itemsList = _mapper.Map<IEnumerable<ItemListVm>>(models);
@@ -93,9 +97,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(itemsList);
         }
 
-        [HttpPost("wishlist")]
-        public async Task<ActionResult> AddItemToWishlist(Guid itemId, Guid userId)
+        [HttpPost("wishlist/{itemId}"), Authorize]
+        public async Task<ActionResult> AddItemToWishlist([FromRoute] Guid itemId)
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             if (userId == Guid.Empty || itemId == Guid.Empty)
             {
                 return BadRequest("Error adding item to wishlist");
@@ -106,9 +112,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("wishlist")]
-        public async Task<ActionResult> DeleteItemFromWishlist(Guid itemId, Guid userId)
+        [HttpDelete("wishlist/{itemId}"), Authorize]
+        public async Task<ActionResult> DeleteItemFromWishlist([FromRoute] Guid itemId)
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             if (userId == Guid.Empty || itemId == Guid.Empty)
             {
                 return BadRequest("Error adding item to wishlist");
@@ -119,9 +127,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("basket/{userId}")]
-        public async Task<ActionResult<IEnumerable<ItemListVm>>> GetItemInBasket([FromRoute] Guid userId)
+        [HttpGet("basket/user"), Authorize]
+        public async Task<ActionResult<IEnumerable<ItemListVm>>> GetItemInBasket()
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             var models = await _itemService.GetItemInBasket(userId);
 
             var itemList = _mapper.Map<IEnumerable<ItemListVm>>(models);
@@ -129,10 +139,12 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(itemList);
         }
 
-        [HttpPost("bakset")]
-        public async Task<ActionResult> AddItemToBasket(Guid userId, Guid itemId, int count)
+        [HttpPost("bakset/{itemId}/{count}"), Authorize]
+        public async Task<ActionResult> AddItemToBasket([FromRoute] Guid itemId, int count)
         {
-            if(userId == Guid.Empty || itemId == Guid.Empty || count < 0)
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if (userId == Guid.Empty || itemId == Guid.Empty || count < 0)
             {
                 return BadRequest("Error adding item to basket");
             }
@@ -142,9 +154,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(id);
         }
 
-        [HttpDelete("basket")]
-        public async Task<ActionResult> DeleteItemFromBasket(Guid itemId, Guid userId)
+        [HttpDelete("basket/{itemId}"), Authorize]
+        public async Task<ActionResult> DeleteItemFromBasket([FromRoute] Guid itemId)
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             if (userId == Guid.Empty || itemId == Guid.Empty)
             {
                 return BadRequest("Error deleting item from basket");
@@ -155,9 +169,11 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPatch("basket")]
-        public async Task<ActionResult> UpdateItemInBasket(Guid userId, Guid itemId, int count)
+        [HttpPatch("basket/{itemId}/{count}"), Authorize]
+        public async Task<ActionResult> UpdateItemInBasket([FromRoute] Guid itemId, int count)
         {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             if (userId == Guid.Empty || itemId == Guid.Empty || count < 0)
             {
                 return BadRequest("Error updating item in basket");
