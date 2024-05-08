@@ -1,7 +1,9 @@
 using FlowerShop.BLL;
 using FlowerShop.DAL.Data;
+using FlowerShop.WebAPI;
 using FlowerShop.WebAPI.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -31,6 +33,20 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        await SeedIdentityData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

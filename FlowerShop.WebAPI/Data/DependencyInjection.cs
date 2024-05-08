@@ -16,6 +16,7 @@ namespace FlowerShop.WebAPI.Data
             services.AddAuthorization();
 
             services.AddIdentityApiEndpoints<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<FlowerIdentityDbContext>();
 
             return services;
