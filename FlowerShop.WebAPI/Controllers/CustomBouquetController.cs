@@ -3,7 +3,9 @@ using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.BLL.Models.InputModels;
 using FlowerShop.BLL.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FlowerShop.WebAPI.Controllers
 {
@@ -20,7 +22,7 @@ namespace FlowerShop.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<IEnumerable<CustomBouquetVm>>> Get()
         {
             var models = await _customBouquetService.GetAllAsync();
@@ -30,7 +32,7 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(customBouquets);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<CustomBouquetVm>> GetById([FromRoute] Guid id)
         {
             var model = await _customBouquetService.GetById(id);
@@ -40,12 +42,14 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(customBouquets);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Add(CustomBouquetInputModel input)
+        [HttpPost, Authorize]
+        public async Task<ActionResult> Add([FromForm] CustomBouquetInputModel input)
         {
-            var model = await CustomBouquetModel.Create(input.Id, input.Photo, input.UserId, input.UserDescription, input.RequestTime);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            if(string.IsNullOrEmpty(model.Error))
+            var model = await CustomBouquetModel.Create(Guid.NewGuid(), input.Photo, userId, input.UserDescription, input.RequestTime);
+
+            if(!string.IsNullOrEmpty(model.Error))
             {
                 return BadRequest(model.Error);
             }
@@ -55,12 +59,14 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(id);
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public async Task<ActionResult> Update(CustomBouquetInputModel input)
         {
-            var model = await CustomBouquetModel.Create(input.Id, input.Photo, input.UserId, input.UserDescription, input.RequestTime);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            if (string.IsNullOrEmpty(model.Error))
+            var model = await CustomBouquetModel.Create(input.Id, input.Photo, userId, input.UserDescription, input.RequestTime);
+
+            if (!string.IsNullOrEmpty(model.Error))
             {
                 return BadRequest(model.Error);
             }

@@ -3,7 +3,9 @@ using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.BLL.Models.InputModels;
 using FlowerShop.BLL.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FlowerShop.WebAPI.Controllers
 {
@@ -20,7 +22,7 @@ namespace FlowerShop.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<OrderVm>>> Get()
         {
             var models = await _orderService.GetAllAsync();
@@ -30,7 +32,7 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<OrderVm>> GetById(Guid id)
         {
             var model = await _orderService.GetById(id);
@@ -40,10 +42,12 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(order);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<ActionResult<Guid>> Add(OrderInputModel input)
         {
-            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, input.UserId, input.OrderStatusId);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
 
             if(string.IsNullOrEmpty(model.Error))
             {
@@ -52,12 +56,12 @@ namespace FlowerShop.WebAPI.Controllers
 
             var id = await _orderService.AddAsync(model.Item1);
 
-            await _orderService.AddItemToOrder(id, input.UserId);
+            await _orderService.AddItemToOrder(id, userId);
 
             return Ok(id);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         public async Task<ActionResult> Delete(Guid id)
         {
             if(id == Guid.Empty)
@@ -70,10 +74,12 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public async Task<ActionResult> Update(OrderInputModel input)
         {
-            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, input.UserId, input.OrderStatusId);
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
 
             if (string.IsNullOrEmpty(model.Error))
             {

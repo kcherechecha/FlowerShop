@@ -3,6 +3,7 @@ using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.BLL.Models.InputModels;
 using FlowerShop.BLL.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerShop.WebAPI.Controllers
@@ -40,7 +41,7 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(category);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> Add(CategoryInputModel input)
         {
             var model = CategoryModel.Create(input.Id, input.Name);
@@ -55,7 +56,7 @@ namespace FlowerShop.WebAPI.Controllers
             return id;
         }
 
-        [HttpPut]
+        [HttpPut, Authorize(Roles = "Admin")]
         public async Task<ActionResult> Update(CategoryInputModel input)
         {
             var model = CategoryModel.Create(input.Id, input.Name);
@@ -70,7 +71,7 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult> Remove([FromRoute] Guid id)
         {
             if(id == Guid.Empty)
