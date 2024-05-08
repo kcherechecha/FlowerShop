@@ -59,7 +59,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
+            var model = OrderModel.Create(Guid.NewGuid(), input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
 
             if(string.IsNullOrEmpty(model.Error))
             {

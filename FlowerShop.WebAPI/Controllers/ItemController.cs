@@ -45,7 +45,7 @@ namespace FlowerShop.WebAPI.Controllers
         [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> Add([FromForm] ItemInputModel input)
         {
-            var model = await ItemModel.Create(input.Id, input.Name, input.Photo, input.Description, input.Price, input.CategoryId);
+            var model = await ItemModel.Create(Guid.NewGuid(), input.Name, input.Photo, input.Description, input.Price, input.CategoryId);
 
             if(!string.IsNullOrEmpty(model.Error))
             {
