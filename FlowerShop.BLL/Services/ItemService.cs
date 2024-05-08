@@ -122,6 +122,7 @@ namespace FlowerShop.BLL.Services
             var itemOrder = new ItemOrder()
             {
                 ItemId = itemId,
+                UserId = userId,
                 ItemCount = itemCount,
             };
 
@@ -131,18 +132,20 @@ namespace FlowerShop.BLL.Services
             return itemOrder.Id;
         }
 
-        public async Task DeleteItemFromBasket(Guid id)
+        public async Task DeleteItemFromBasket(Guid itemId, Guid userId)
         {
-            var itemOrder = new ItemOrder() { Id = id };
+            var entity = await _context.ItemOrders
+                                .Where(io => io.ItemId == itemId && io.UserId == userId && io.OrderId == null)
+                                .FirstOrDefaultAsync();
 
-            await _context.ItemOrders.AddAsync(itemOrder);
+            _context.ItemOrders.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateItemCountInBasket(Guid id, int count)
+        public async Task UpdateItemCountInBasket(Guid itemId, Guid userId, int count)
         {
             var entity = await _context.ItemOrders
-                .Where(e => e.Id == id)
+                .Where(io => io.ItemId == itemId && io.UserId == userId && io.OrderId == null)
                 .ExecuteUpdateAsync(e => e
                 .SetProperty(p => p.ItemCount, count));
 

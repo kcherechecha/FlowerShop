@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FlowerShop.BLL.Models;
+using FlowerShop.BLL.Models.InputModels;
+using FlowerShop.BLL.Models.ViewModels;
 using FlowerShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,10 @@ namespace FlowerShop.BLL
 
             CreateMap<Wishlist, WishlistModel>()
                 .ReverseMap();
+
+            CreateMap<CategoryModel, CategoryVm>();
+
+            CreateMap<CustomBouquetModel, CustomBouquetVm>();
         }
     }
 }

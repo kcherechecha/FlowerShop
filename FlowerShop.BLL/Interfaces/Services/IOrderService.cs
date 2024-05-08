@@ -9,5 +9,6 @@ namespace FlowerShop.BLL.Interfaces.Services
 {
     public interface IOrderService : ICrud<OrderModel>
     {
+        Task AddItemToOrder(Guid orderId, Guid userId);
     }
 }

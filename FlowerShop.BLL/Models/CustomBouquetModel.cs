@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlowerShop.BLL.Common.Extensions;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +27,7 @@ namespace FlowerShop.BLL.Models
         public string? UserDescription { get; }
         public DateTime RequestTime { get; }
 
-        public static (CustomBouquetModel, string Error) Create(Guid id, byte[]? photo, Guid userId, string? userDescription, DateTime requestTime)
+        public async static Task<(CustomBouquetModel, string Error)> Create(Guid id, IFormFile? photo, Guid userId, string? userDescription, DateTime requestTime)
         {
             var error = string.Empty;
 
@@ -49,7 +51,9 @@ namespace FlowerShop.BLL.Models
                 error = "Description more than 1000 symbols";
             }
 
-            var customBouquet = new CustomBouquetModel(id, photo, userId, userDescription, requestTime);
+            var photoInByte = await photo.ToByteArrayAsync();
+
+            var customBouquet = new CustomBouquetModel(id, photoInByte, userId, userDescription, requestTime);
 
             return (customBouquet, error);
         }

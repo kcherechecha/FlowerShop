@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlowerShop.BLL.Common.Extensions;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,7 +32,7 @@ namespace FlowerShop.BLL.Models
         public Guid CategoryId { get; }
         public CategoryModel Category { get; }
 
-        public static (ItemModel, string Error) Create(Guid id, string? name, byte[]? photo, 
+        public async static Task<(ItemModel, string Error)> Create(Guid id, string? name, IFormFile? photo, 
             string? description, decimal price, Guid categoryId)
         {
             var error = string.Empty;
@@ -65,7 +67,9 @@ namespace FlowerShop.BLL.Models
                 error = "Item Category Id";
             }
 
-            var item = new ItemModel(id, name, photo, description, price, categoryId);
+            var photoInByte = await photo.ToByteArrayAsync();
+
+            var item = new ItemModel(id, name, photoInByte, description, price, categoryId);
 
             return (item, error);
         }

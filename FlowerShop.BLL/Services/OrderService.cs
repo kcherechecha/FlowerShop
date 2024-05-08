@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
+using FlowerShop.BLL.Models.ViewModels;
 using FlowerShop.DAL.Data;
 using FlowerShop.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,16 @@ namespace FlowerShop.BLL.Services
             var entity = await _context.Orders
                 .ExecuteUpdateAsync(e => e
                 .SetProperty(p => p.OrderAddress, model.OrderAddress));
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddItemToOrder(Guid orderId, Guid userId)
+        {
+            var entity = await _context.ItemOrders
+                .Where(io => io.UserId == userId && io.OrderId == null)
+                .ExecuteUpdateAsync(io => io
+                .SetProperty(p => p.OrderId, orderId));
 
             await _context.SaveChangesAsync();
         }
