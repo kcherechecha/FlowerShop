@@ -32,6 +32,18 @@ namespace FlowerShop.WebAPI.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("user"), Authorize]
+        public async Task<ActionResult<IEnumerable<OrderVm>>> GetByUser()
+        {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var models = await _orderService.GetByUser(userId);
+
+            var orders = _mapper.Map<OrderVm>(models);
+
+            return Ok(orders);
+        }
+
         [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<OrderVm>> GetById(Guid id)
         {

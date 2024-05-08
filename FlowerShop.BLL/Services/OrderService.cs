@@ -48,6 +48,18 @@ namespace FlowerShop.BLL.Services
             return models;
         }
 
+        public async Task<IEnumerable<OrderModel>> GetByUser(Guid userId)
+        {
+            var entities = await _context.Orders
+                .Where(e => e.UserId == userId)
+                .Include(e => e.OrderStatus)
+                .ToListAsync();
+
+            var models = _mapper.Map<IEnumerable<OrderModel>>(entities);
+
+            return models;
+        }
+
         public async Task<OrderModel> GetById(Guid id)
         {
             var entities = await _context.Orders
