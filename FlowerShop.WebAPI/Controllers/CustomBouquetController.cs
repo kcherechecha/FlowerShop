@@ -27,9 +27,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _customBouquetService.GetAllAsync();
 
-            var customBouquets = _mapper.Map<IEnumerable<CustomBouquetVm>>(models);
-
-            return Ok(customBouquets);
+            return Ok(models);
         }
 
         [HttpGet("{id}"), Authorize]
@@ -37,9 +35,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _customBouquetService.GetById(id);
 
-            var customBouquets = _mapper.Map<CustomBouquetVm>(model);
-
-            return Ok(customBouquets);
+            return Ok(model);
         }
 
         [HttpPost, Authorize]
