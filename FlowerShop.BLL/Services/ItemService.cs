@@ -50,9 +50,7 @@ namespace FlowerShop.BLL.Services
 
         public async Task<IEnumerable<ItemListVm>> GetAllAsync()
         {
-            var entity = await _context.Items
-                .Include(e => e.Category)
-                .ToListAsync();
+            var entity = await _context.Items.ToListAsync();
 
             var model = _mapper.Map<IEnumerable<ItemListVm>>(entity);
 
