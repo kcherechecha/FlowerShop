@@ -27,9 +27,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _orderService.GetAllAsync();
 
-            var orders = _mapper.Map<OrderVm>(models);
-
-            return Ok(orders);
+            return Ok(models);
         }
 
         [HttpGet("user"), Authorize]
@@ -39,9 +37,7 @@ namespace FlowerShop.WebAPI.Controllers
 
             var models = await _orderService.GetByUser(userId);
 
-            var orders = _mapper.Map<OrderVm>(models);
-
-            return Ok(orders);
+            return Ok(models);
         }
 
         [HttpGet("{id}"), Authorize]
@@ -49,9 +45,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _orderService.GetById(id);
 
-            var order = _mapper.Map<OrderVm>(model);
-
-            return Ok(order);
+            return Ok(model);
         }
 
         [HttpPost, Authorize]
