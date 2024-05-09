@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlowerShop.BLL.Interfaces.Services
 {
-    public interface IWishlistService : ICrud<WishlistModel>
+    public interface IWishlistService
     {
     }
 }

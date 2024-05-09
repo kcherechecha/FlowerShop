@@ -23,6 +23,10 @@ namespace FlowerShop.BLL
 
             CreateMap<Item, ItemModel>();
 
+            CreateMap<Item, ItemListVm>();
+
+            CreateMap<Item, ItemVm>();
+
             CreateMap<ItemModel, Item>();
 
             CreateMap<ItemOrder, ItemOrderModel>()

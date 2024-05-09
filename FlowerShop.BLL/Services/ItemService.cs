@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
+using FlowerShop.BLL.Models.ViewModels;
 using FlowerShop.DAL.Data;
 using FlowerShop.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -36,24 +37,24 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ItemModel> GetById(Guid id)
+        public async Task<ItemVm> GetById(Guid id)
         {
             var entity = await _context.Items
                 .Include(e => e.Category)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
-            var model = _mapper.Map<ItemModel>(entity);
+            var model = _mapper.Map<ItemVm>(entity);
 
             return model;
         }
 
-        public async Task<IEnumerable<ItemModel>> GetAllAsync()
+        public async Task<IEnumerable<ItemListVm>> GetAllAsync()
         {
             var entity = await _context.Items
                 .Include(e => e.Category)
                 .ToListAsync();
 
-            var model = _mapper.Map<IEnumerable<ItemModel>>(entity);
+            var model = _mapper.Map<IEnumerable<ItemListVm>>(entity);
 
             return model;
         }
@@ -69,14 +70,14 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync(); 
         }
 
-        public async Task<IEnumerable<ItemModel>> GetWishlistItem(Guid UserId)
+        public async Task<IEnumerable<ItemListVm>> GetWishlistItem(Guid UserId)
         {
             var entities = await _context.Items
                                 .Include(e => e.ItemWishlists)
                                 .Where(e => e.ItemWishlists.Any(x => x.UserId == UserId))
                                 .ToListAsync();
 
-            var models = _mapper.Map<IEnumerable<ItemModel>>(entities);
+            var models = _mapper.Map<IEnumerable<ItemListVm>>(entities);
 
             return models;
         }
@@ -105,14 +106,14 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ItemModel>> GetItemInBasket(Guid UserId)
+        public async Task<IEnumerable<ItemListVm>> GetItemInBasket(Guid UserId)
         {
             var entities = await _context.Items
                                 .Include(e => e.ItemWishlists)
                                 .Where(e => e.ItemOrders.Any(x => x.UserId == UserId && x.OrderId == null))
                                 .ToListAsync();
 
-            var models = _mapper.Map<IEnumerable<ItemModel>>(entities);
+            var models = _mapper.Map<IEnumerable<ItemListVm>>(entities);
 
             return models;
         }
