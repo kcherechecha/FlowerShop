@@ -15,29 +15,27 @@ namespace FlowerShop.BLL
     {
         public AutomapperProfile()
         {
-            CreateMap<Category, CategoryModel>()
-                .ReverseMap();
+            CreateMap<Category, CategoryVm>();
 
-            CreateMap<CustomBouquet, CustomBouquetModel>() 
-                .ReverseMap();
+            CreateMap<CategoryModel, Category>();
 
-            CreateMap<Item, ItemModel>();
+            CreateMap<CustomBouquet, CustomBouquetVm>();
+
+            CreateMap<CustomBouquetModel, CustomBouquet>();
+
+            CreateMap<Item, ItemListVm>();
+
+            CreateMap<Item, ItemVm>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<ItemModel, Item>();
 
-            CreateMap<ItemOrder, ItemOrderModel>()
-                .ReverseMap();
+            CreateMap<Order, OrderVm>()
+                .ForMember(dest => dest.OrderStatusName, opt => opt.MapFrom(src => src.OrderStatus.Name));
 
-            CreateMap<Order, OrderModel>()
-                .ForMember(om => om.OrderStatusName, o => o.MapFrom(x => x.OrderStatus.Name))
-                .ReverseMap();
+            CreateMap<OrderModel, Order>();
 
-            CreateMap<Wishlist, WishlistModel>()
-                .ReverseMap();
-
-            CreateMap<CategoryModel, CategoryVm>();
-
-            CreateMap<CustomBouquetModel, CustomBouquetVm>();
+            CreateMap<WishlistModel, Wishlist>();
         }
     }
 }

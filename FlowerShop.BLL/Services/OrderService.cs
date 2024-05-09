@@ -37,36 +37,36 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<OrderModel>> GetAllAsync()
+        public async Task<IEnumerable<OrderVm>> GetAllAsync()
         {
             var entities = await _context.Orders
                 .Include(e => e.OrderStatus)
                 .ToListAsync();
 
-            var models = _mapper.Map<IEnumerable<OrderModel>>(entities);
+            var models = _mapper.Map<IEnumerable<OrderVm>>(entities);
 
             return models;
         }
 
-        public async Task<IEnumerable<OrderModel>> GetByUser(Guid userId)
+        public async Task<IEnumerable<OrderVm>> GetByUser(Guid userId)
         {
             var entities = await _context.Orders
                 .Where(e => e.UserId == userId)
                 .Include(e => e.OrderStatus)
                 .ToListAsync();
 
-            var models = _mapper.Map<IEnumerable<OrderModel>>(entities);
+            var models = _mapper.Map<IEnumerable<OrderVm>>(entities);
 
             return models;
         }
 
-        public async Task<OrderModel> GetById(Guid id)
+        public async Task<OrderVm> GetById(Guid id)
         {
             var entities = await _context.Orders
                 .Include(e => e.OrderStatus)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
-            var models = _mapper.Map<OrderModel>(entities);
+            var models = _mapper.Map<OrderVm>(entities);
 
             return models;
         }
