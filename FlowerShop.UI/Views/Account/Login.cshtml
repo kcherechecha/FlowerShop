@@ -1,0 +1,47 @@
+﻿@model FlowerShop.UI.Models.User.LoginUser;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+    <title>Login</title>
+</head>
+<body>
+
+<h1>Login</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Login">
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-primary" />
+                        <button type="button" class="btn btn-success" id="register-btn">Register</button>
+                    </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+</body>
+</html>
+
+
+<script>
+    document.getElementById('register-btn').addEventListener('click', function () {
+        window.location.href = '/Account/Register'; 
+    });
+</script>

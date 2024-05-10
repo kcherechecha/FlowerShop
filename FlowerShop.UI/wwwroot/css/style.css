@@ -4,6 +4,10 @@ body {
     scroll-behavior: smooth;
 }
 
+page-content{
+    margin-top: 170px;
+}
+
 header .container .row .navbar {
     padding: 20px 0px !important;
     background: #ffffff !important;
