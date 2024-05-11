@@ -13,6 +13,7 @@ namespace FlowerShop.BLL.Interfaces.Services
         Task<Guid> AddAsync(ItemModel model);
         Task<Guid> AddItemToBasket(Guid itemId, Guid userId, int itemCount);
         Task AddItemToWishlist(Guid itemId, Guid userId);
+        Task CreateWishlist(Guid userId);
         Task DeleteAsync(Guid id);
         Task DeleteItemFromBasket(Guid itemId, Guid userId);
         Task DeleteItemFromWishlist(Guid itemId, Guid userId);

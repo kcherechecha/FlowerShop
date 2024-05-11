@@ -82,6 +82,8 @@ namespace FlowerShop.BLL.Services
 
         public async Task AddItemToWishlist(Guid itemId, Guid userId)
         {
+            var checkExist = _context.ItemWishlists.Any(x => x.ItemId == itemId && x.UserId == userId);
+
             var itemWishlistEntity = new ItemWishlist()
             {
                 ItemId = itemId,
@@ -118,6 +120,13 @@ namespace FlowerShop.BLL.Services
 
         public async Task<Guid> AddItemToBasket(Guid itemId, Guid userId, int itemCount)
         {
+            var checkExist = _context.ItemOrders.Any(x => x.ItemId == itemId && x.UserId == userId && x.OrderId == null);
+
+            if(checkExist)
+            {
+                return Guid.Empty;
+            }
+
             var itemOrder = new ItemOrder()
             {
                 ItemId = itemId,
@@ -151,5 +160,15 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task CreateWishlist(Guid userId)
+        {
+            if (!_context.Wishlists.Any(x => x.UserId == userId))
+            {
+                var entity = new Wishlist() { UserId = userId };
+
+                await _context.Wishlists.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<FlowerShop.UI.Models.ItemListVm>
+
+@{
+    ViewData["Title"] = "ShowWishlist";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+</head>
+
+<body>
+    <section class="section4" id="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1>My <span class="clrchange">Basket</span></h1>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-4" data-aos="fade-right">
+                        <div class="innerproductsection">
+                            <img src="data:image/jpeg;base64,@item.PhotoFile" alt="Image" />
+                            <div class="cartcontainer">
+                                <button class="wishlist" onclick="deleteItemFromBasket(`@item.Id`)"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                            <input type="number" class="item-quantity" value="1" min="1" max="1000" />
+                            <h2>@item.Name</h2>
+                            <h1 class="price"><span class="clrchange">@item.Price грн</span></h1>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+<script src="~/js/item/deleteItemFormBasket.js"></script>

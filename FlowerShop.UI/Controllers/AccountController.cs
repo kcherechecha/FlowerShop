@@ -79,6 +79,10 @@ namespace FlowerShop.UI.Controllers
                         IsEssential = true
                     });
 
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.accessToken);
+
+                    await _httpClient.PostAsync("api/item/wishlist-create", null);
+
                     return RedirectToAction("Index", "Home");
                 }
             }

@@ -23,6 +23,7 @@
             with 70% Off – Blossom Your Holidays with Our Enchanting Flowers!
         </marquee>
     </div>
+    <div id="notification" class="notification"></div>
     <header>
         <div class="container">
             <div class="row">
@@ -56,10 +57,10 @@
                                     @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]))
                                     {
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#"><i class="fa-solid fa-heart"></i></a>
+                                            <a class="nav-link" asp-controller="Item" asp-action="ShowWishlist"><i class="fa-solid fa-heart"></i></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                                            <a class="nav-link" asp-controller="Item" asp-action="ShowBasket"><i class="fa-solid fa-cart-shopping"></i></a>
                                         </li>
                                     }
                                     <li class="nav-item">
@@ -97,6 +98,7 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/showNotification.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

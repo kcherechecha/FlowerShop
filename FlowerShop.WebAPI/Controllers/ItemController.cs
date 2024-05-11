@@ -175,5 +175,20 @@ namespace FlowerShop.WebAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPost("wishlist-create")]
+        public async Task<ActionResult> CreateWishlist()
+        {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if(userId == Guid.Empty)
+            {
+                return BadRequest("Error creatig wishlist");
+            }
+
+            await _itemService.CreateWishlist(userId);
+
+            return Ok();
+        }
     }
 }
