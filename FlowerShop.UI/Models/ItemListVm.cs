@@ -1,5 +1,4 @@
-﻿using FlowerShop.UI.Common.Extensions;
-
+﻿
 namespace FlowerShop.UI.Models
 {
     public class ItemListVm

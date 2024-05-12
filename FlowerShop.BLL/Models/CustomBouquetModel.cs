@@ -12,12 +12,13 @@ namespace FlowerShop.BLL.Models
     {
         public const int MaxPhotoSize = 4 * 1024 * 1024;
         public const int MaxUserDescriptionLenght = 1000;
-        private CustomBouquetModel(Guid id, byte[]? photo, Guid userId, string? userDescription, DateTime requestTime)
+        private CustomBouquetModel(Guid id, byte[]? photo, Guid userId, string? userDescription, string phoneNumber, DateTime requestTime)
         {
             Id = id;
             Photo = photo;
             UserId = userId;
             UserDescription = userDescription;
+            PhoneNumber = phoneNumber;
             RequestTime = requestTime;
         }
 
@@ -25,9 +26,10 @@ namespace FlowerShop.BLL.Models
         public byte[]? Photo { get; }
         public Guid UserId { get; }
         public string? UserDescription { get; }
+        public string PhoneNumber { get; }
         public DateTime RequestTime { get; }
 
-        public async static Task<(CustomBouquetModel, string Error)> Create(Guid id, IFormFile? photo, Guid userId, string? userDescription, DateTime requestTime)
+        public async static Task<(CustomBouquetModel, string Error)> Create(Guid id, byte[]? photo, Guid userId, string? userDescription, string phoneNumber, DateTime requestTime)
         {
             var error = string.Empty;
 
@@ -51,9 +53,12 @@ namespace FlowerShop.BLL.Models
                 error = "Description more than 1000 symbols";
             }
 
-            var photoInByte = await photo.ToByteArrayAsync();
+            if (string.IsNullOrWhiteSpace(phoneNumber) || (phoneNumber.Length != 12 && phoneNumber.Length != 10))
+            {
+                error = "Phone number is empty or incorrect format";
+            }
 
-            var customBouquet = new CustomBouquetModel(id, photoInByte, userId, userDescription, requestTime);
+            var customBouquet = new CustomBouquetModel(id, photo, userId, userDescription, phoneNumber, requestTime);
 
             return (customBouquet, error);
         }

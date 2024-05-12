@@ -39,11 +39,11 @@ namespace FlowerShop.WebAPI.Controllers
         }
 
         [HttpPost, Authorize]
-        public async Task<ActionResult> Add([FromForm] CustomBouquetInputModel input)
+        public async Task<ActionResult> Add([FromBody] CustomBouquetInputModel input)
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = await CustomBouquetModel.Create(Guid.NewGuid(), input.Photo, userId, input.UserDescription, input.RequestTime);
+            var model = await CustomBouquetModel.Create(Guid.NewGuid(), input.Photo, userId, input.UserDescription, input.PhoneNumber, input.RequestTime);
 
             if(!string.IsNullOrEmpty(model.Error))
             {
@@ -60,7 +60,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = await CustomBouquetModel.Create(input.Id, input.Photo, userId, input.UserDescription, input.RequestTime);
+            var model = await CustomBouquetModel.Create(input.Id, input.Photo, userId, input.UserDescription, input.PhoneNumber, input.RequestTime);
 
             if (!string.IsNullOrEmpty(model.Error))
             {
