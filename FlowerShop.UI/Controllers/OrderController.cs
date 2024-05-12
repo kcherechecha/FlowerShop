@@ -18,11 +18,28 @@ namespace FlowerShop.UI.Controllers
             _httpClient = httpClientFactory.CreateClient("FlowerShopApiClient");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUserOrders()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<IEnumerable<OrderVm>>("api/order/user");
+
+                return View(response);
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
 
         [HttpGet]
         public IActionResult CreateOrder(decimal totalPriceInput)
-            {
-            var request = new OrderInputModel() { Price = totalPriceInput};
+        {
+            var request = new OrderInputModel() { OrderPrice = totalPriceInput};
 
             return View(request);
         }

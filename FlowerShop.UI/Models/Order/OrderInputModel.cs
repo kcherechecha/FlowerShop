@@ -4,6 +4,6 @@
     {
         public string? OrderAddress { get; set; }
         public string PhoneNumber { get; set; }
-        public decimal Price { get; set; }
+        public decimal OrderPrice { get; set; }
     }
 }
