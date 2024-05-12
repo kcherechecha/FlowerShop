@@ -24,7 +24,10 @@ namespace FlowerShop.BLL.Services
             var entity = _mapper.Map<Order>(model);
 
             await _context.Orders.AddAsync(entity);
+
             await _context.SaveChangesAsync();
+
+            await AddItemToOrder(entity.Id, model.UserId);
 
             return entity.Id;
         }
@@ -86,8 +89,17 @@ namespace FlowerShop.BLL.Services
                 .Where(io => io.UserId == userId && io.OrderId == null)
                 .ExecuteUpdateAsync(io => io
                 .SetProperty(p => p.OrderId, orderId));
+        }
 
-            await _context.SaveChangesAsync();
+        public async Task ChangeItemCount(IEnumerable<ItemOrdersCountUpdate> itemOrders, Guid userId)
+        {
+            foreach (var itemOrder in itemOrders)
+            {
+                var entity = await _context.ItemOrders
+                    .Where(io => io.UserId == userId && io.OrderId == null && io.ItemId == itemOrder.itemId)
+                    .ExecuteUpdateAsync(io => io
+                    .SetProperty(p => p.ItemCount, itemOrder.quantity));
+            }
         }
     }
 }

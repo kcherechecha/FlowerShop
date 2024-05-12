@@ -25,5 +25,15 @@ namespace FlowerShop.WebAPI.Controllers
 
             return Ok(model);
         }
+
+        [HttpPatch, Authorize]
+        public async Task<IActionResult> AddPhoneNumber(string number)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var confirm = await _identityService.AddPhoneNumber(number, userId);
+
+            return Ok(confirm);
+        }
     }
 }

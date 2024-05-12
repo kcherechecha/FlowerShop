@@ -10,10 +10,11 @@ namespace FlowerShop.BLL.Models
     public class OrderModel
     {
         public const int MaxAdressLenght = 255;
-        private OrderModel(Guid id, string? orderAddress, decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
+        private OrderModel(Guid id, string? orderAddress, string phoneNumber, decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
         {
             Id = id;
             OrderAddress = orderAddress;
+            PhoneNumber = phoneNumber;
             OrderPrice = orderPrice;
             OrderTime = orderTime;
             UserId = userId;
@@ -22,14 +23,14 @@ namespace FlowerShop.BLL.Models
 
         public Guid Id { get; }
         public string? OrderAddress { get; }
+        public string PhoneNumber { get; }
         public decimal OrderPrice { get; }
         public DateTime OrderTime { get; }
         public Guid UserId { get; }
         public int OrderStatusId { get; }
-        public int OrderStatusName { get; }
 
         public static (OrderModel, string Error) Create(Guid id, string? orderAddress, 
-            decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
+            string phoneNumber, decimal orderPrice, DateTime orderTime, Guid userId, int orderStatusId)
         {
             var error = string.Empty;
 
@@ -43,6 +44,11 @@ namespace FlowerShop.BLL.Models
                 error = "Order Address null, empty or more than 255 symbols";
             }
 
+            if(string.IsNullOrWhiteSpace(phoneNumber) || (phoneNumber.Length != 12 && phoneNumber.Length != 10))
+            {
+                error = "Phone number is empty or incorrect format";
+            }
+
             if (orderPrice is < 0 or > decimal.MaxValue)
             {
                 error = "Order Price range error";
@@ -53,7 +59,7 @@ namespace FlowerShop.BLL.Models
                 error = "Order User Id error";
             }
 
-            var order = new OrderModel(id, orderAddress, orderPrice, orderTime, userId, orderStatusId);
+            var order = new OrderModel(id, orderAddress, phoneNumber, orderPrice, orderTime, userId, orderStatusId);
 
             return (order, error);
         }

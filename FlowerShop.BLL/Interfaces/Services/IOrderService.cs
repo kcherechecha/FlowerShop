@@ -12,6 +12,7 @@ namespace FlowerShop.BLL.Interfaces.Services
     {
         Task<Guid> AddAsync(OrderModel model);
         Task AddItemToOrder(Guid orderId, Guid userId);
+        Task ChangeItemCount(IEnumerable<ItemOrdersCountUpdate> itemOrders, Guid userId);
         Task DeleteAsync(Guid id);
         Task<IEnumerable<OrderVm>> GetAllAsync();
         Task<OrderVm> GetById(Guid id);

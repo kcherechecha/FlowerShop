@@ -44,7 +44,23 @@ namespace FlowerShop.DAL
                     CategoryId = categories[1].Id, Price = 200, Photo = File.ReadAllBytes($"{imagePath}/Orchid.jpg")},
             };
 
+            var orderStatuses = new List<OrderStatus>()
+            {
+                new OrderStatus { Id = 1, Name = "Created by User"},
+                new OrderStatus { Id = 2, Name = "Confirmed by Shop"},
+                new OrderStatus { Id = 3, Name = "Order placed"},
+                new OrderStatus { Id = 4, Name = "Arrived"},
+                new OrderStatus { Id = 5, Name = "Received"},
+            };
+
             bool saveChange = false;
+
+            if(!context.OrderStatuses.Any())
+            {
+                context.OrderStatuses.AddRange(orderStatuses);
+
+                saveChange = true;
+            }
 
             if(!context.Categories.Any() && !context.Items.Any())
             {

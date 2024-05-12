@@ -29,5 +29,17 @@ namespace FlowerShop.WebAPI.Services
 
             return user;
         }
+
+        public async Task<int> AddPhoneNumber(string phone, string id)
+        {
+            var confirm = await _context.Users
+                .Where(x => x.Id == id)
+                .ExecuteUpdateAsync(p => p
+                .SetProperty(e => e.PhoneNumber, phone));
+
+            await _context.SaveChangesAsync();
+
+            return confirm;
+        }
     }
 }
