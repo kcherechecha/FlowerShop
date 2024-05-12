@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FlowerShop.WebAPI.Controllers
 {
@@ -34,6 +35,16 @@ namespace FlowerShop.WebAPI.Controllers
             var confirm = await _identityService.AddPhoneNumber(number, userId);
 
             return Ok(confirm);
+        }
+
+        [HttpGet("role"), Authorize]
+        public async Task<IActionResult> GetRole()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var role = await _identityService.GetRole(userId);
+
+            return Ok(role);
         }
     }
 }

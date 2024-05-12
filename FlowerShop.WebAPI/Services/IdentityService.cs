@@ -41,5 +41,25 @@ namespace FlowerShop.WebAPI.Services
 
             return confirm;
         }
+
+        public async Task<Role> GetRole(string id)
+        {
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(x => x.UserId == id);
+
+            if(userRole == null)
+            {
+                return new Role()
+                {
+                    RoleName = "User"
+                };
+            }
+
+            var identityRole = await _context.Roles.FindAsync(userRole.RoleId);
+
+            return new Role()
+            {
+                RoleName = identityRole.Name
+            };
+        }
     }
 }

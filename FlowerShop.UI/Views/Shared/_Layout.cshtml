@@ -40,17 +40,17 @@
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item active">
-                                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                                        <a class="nav-link" asp-controller="Home" asp-action="Index">Головна</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Order" asp-action="GetUserOrders">Замовлення</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#product">Products</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#contact">Contact</a>
-                                    </li>
+                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Order" asp-action="GetUserOrders">Замовлення</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="CustomBouquet" asp-action="CreateCustomBouquet">Власний букет</a>
+                                        </li>
+                                    }
                                 </ul>
 
                                 <ul class="navbar-nav ml-auto">

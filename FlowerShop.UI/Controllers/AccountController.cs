@@ -81,6 +81,15 @@ namespace FlowerShop.UI.Controllers
 
                     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.accessToken);
 
+                    var role = await _httpClient.GetFromJsonAsync<Role>("api/identity/role");
+
+                    Response.Cookies.Append("RoleName", role.RoleName, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTimeOffset.Now.AddHours(1),
+                        IsEssential = true
+                    });
+
                     await _httpClient.PostAsync("api/item/wishlist-create", null);
 
                     return RedirectToAction("Index", "Home");
