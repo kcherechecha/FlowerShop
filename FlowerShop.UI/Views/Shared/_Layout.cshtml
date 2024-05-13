@@ -42,7 +42,7 @@
                                     <li class="nav-item active">
                                         <a class="nav-link" asp-controller="Home" asp-action="Index">Головна</a>
                                     </li>
-                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]))
+                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
                                     {
                                         <li class="nav-item">
                                             <a class="nav-link" asp-controller="Order" asp-action="GetUserOrders">Замовлення</a>
@@ -51,10 +51,19 @@
                                             <a class="nav-link" asp-controller="CustomBouquet" asp-action="CreateCustomBouquet">Власний букет</a>
                                         </li>
                                     }
+                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "Admin")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Order" asp-action="GetAllOrders">Список замовлень</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="CustomBouquet" asp-action="GetCustomBouquets">Власні букети</a>
+                                        </li>
+                                    }
                                 </ul>
 
                                 <ul class="navbar-nav ml-auto">
-                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]))
+                                    @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
                                     {
                                         <li class="nav-item">
                                             <a class="nav-link" asp-controller="Item" asp-action="ShowWishlist"><i class="fa-solid fa-heart"></i></a>

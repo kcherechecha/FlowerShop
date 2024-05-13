@@ -15,6 +15,22 @@ namespace FlowerShop.UI.Controllers
             _httpClient = httpClientFactory.CreateClient("FlowerShopApiClient");
         }
 
+        public async Task<IActionResult> GetCustomBouquets()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<IEnumerable<CustomBouquetVm>>("api/CustomBouquet");
+
+                return View(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         public IActionResult CreateCustomBouquet()
         {

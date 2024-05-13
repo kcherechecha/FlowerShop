@@ -7,14 +7,7 @@ function deleteItemFromBasket(itemId) {
         data: { itemId: itemId },
         success: function (response) {
             console.log(`${response} deleted from basket`)
-
-            var itemContainers = document.querySelectorAll('.item-container');
-            itemContainers.forEach(function (container) {
-                if (container.dataset.itemId === itemId) {
-                    container.remove();
-                }
-            });
-
+            window.location.reload();
         },
         error: function (xhr, status, error) {
             

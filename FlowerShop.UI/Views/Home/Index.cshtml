@@ -127,12 +127,16 @@
                 <div class="col-sm-4" data-aos="fade-right">
                     <div class="innerproductsection">
                             <img src="data:image/jpeg;base64,@item.PhotoFile" alt="Image" />
-                            <div class="cartcontainer">
-                                <button class="wishlist" onclick="addItemToWishlist(`@item.Id`)"><i class="fa-solid fa-heart"></i></button>
-                            <button class="btn" onclick="addItemToBasket(`@item.Id`)">Add To Card<i class="fa-solid fa-cart-plus"></i></button>
-                        </div>
+                            @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
+                            {
+                                <div class="cartcontainer">
+                                    <button class="wishlist" onclick="addItemToWishlist(`@item.Id`)"><i class="fa-solid fa-heart"></i></button>
+                                    <button class="btn" onclick="addItemToBasket(`@item.Id`)">Add To Card<i class="fa-solid fa-cart-plus"></i></button>
+                                </div>
+                            }
                         <h2>@item.Name</h2>
                         <h1 class="price"><span class="clrchange">@item.Price грн</span></h1>
+                        <div id="check-on-add"></div>
                     </div>
                 </div>
                 }
@@ -183,9 +187,9 @@
                 <div class="col-sm-3">
                     <h3 class="footerheadings">Extra Links</h3>
                     <ul>
-                        <li><a href="javascript:;">My Account</a></li>
-                        <li><a href="javascript:;">My Order</a></li>
-                        <li><a href="javascript:;">Wishlist</a></li>
+                        <li><a asp-controller="Order" asp-action="GetUserOrders">My Orders</a></li>
+                        <li><a asp-controller="Account" asp-action="Profile">My Account</a></li>
+                        <li><a asp-controller="Item" asp-action="ShowWishlist">Wishlist</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -225,4 +229,4 @@
 
 <script src="~/js/item/addItemToBasket.js"></script>
 <script src="~/js/item/addItemToWishlist.js"></script>
-<script src="/js/showNotification.js"></script>
+<script src="~/js/item/showMessage.js"></script>

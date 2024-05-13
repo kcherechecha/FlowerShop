@@ -83,7 +83,7 @@ namespace FlowerShop.UI.Controllers
 
                     var role = await _httpClient.GetFromJsonAsync<Role>("api/identity/role");
 
-                    Response.Cookies.Append("RoleName", role.RoleName, new CookieOptions
+                    Response.Cookies.Append("Role", role.RoleName, new CookieOptions
                     {
                         HttpOnly = true,
                         Expires = DateTimeOffset.Now.AddHours(1),
@@ -149,6 +149,7 @@ namespace FlowerShop.UI.Controllers
             {
                 Response.Cookies.Delete("AccessToken");
                 Response.Cookies.Delete("RefreshToken");
+                Response.Cookies.Delete("Role");
 
                 return RedirectToAction("Index", "Home");
             }

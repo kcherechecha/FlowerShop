@@ -1,10 +1,7 @@
 ﻿using FlowerShop.UI.Models.Order;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using System.Net.Http;
-using FlowerShop.UI.Models.ErrorModel;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text;
 
 namespace FlowerShop.UI.Controllers
@@ -32,6 +29,23 @@ namespace FlowerShop.UI.Controllers
             catch(Exception ex)
             {
                 return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<IEnumerable<OrderVm>>("api/order");
+
+                return View(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

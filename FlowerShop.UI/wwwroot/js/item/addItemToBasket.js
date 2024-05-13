@@ -7,7 +7,7 @@ function addItemToBasket(itemId) {
         data: { itemId: itemId },
         success: function (response) {
             console.log(`${response} added to basket`)
-            showNotification('Товар додано до корзини!');
+            showSuccessMessage();
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {

@@ -51,6 +51,7 @@ namespace FlowerShop.DAL
                 new OrderStatus { Id = 3, Name = "Order placed"},
                 new OrderStatus { Id = 4, Name = "Arrived"},
                 new OrderStatus { Id = 5, Name = "Received"},
+                new OrderStatus { Id = 10, Name = "Canceled"},
             };
 
             bool saveChange = false;

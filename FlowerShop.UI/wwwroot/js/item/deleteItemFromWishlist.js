@@ -7,6 +7,7 @@ function deleteItemFromWishlist(itemId) {
         data: { itemId: itemId },
         success: function (response) {
             console.log(`${response} deleted from wishlist`)
+            window.location.reload();
         },
         error: function (xhr, status, error) {
 
