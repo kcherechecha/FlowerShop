@@ -1,12 +1,11 @@
-﻿function showSuccessMessage() {
-    var messageElement = document.createElement('p');
-    messageElement.textContent = 'Додано до корзини!';
-    messageElement.style.color = 'green'; 
+﻿function openModal(text) {
+    $('#Modal .modal-body').text(text);
 
-    var checkOnAddDiv = document.getElementById('check-on-add');
-    checkOnAddDiv.appendChild(messageElement);
+    $('#Modal').modal('show');
+
+    $('#Modal').css('top', '100px');
 
     setTimeout(function () {
-        messageElement.remove(); 
-    }, 3000);
+        $('#Modal').modal('hide');
+    }, 2000);
 }

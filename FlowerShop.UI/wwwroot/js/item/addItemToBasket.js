@@ -7,7 +7,7 @@ function addItemToBasket(itemId) {
         data: { itemId: itemId },
         success: function (response) {
             console.log(`${response} added to basket`)
-            showSuccessMessage();
+            openModal('Item added to basket');
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {

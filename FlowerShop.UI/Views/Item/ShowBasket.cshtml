@@ -30,13 +30,16 @@
                     </div>
                 }
             </div>
-            <div id="totalPrice"></div>
-            <div>
-                <form method="post">
+            @if (Model.Count() > 0)
+            {
+                <div id="totalPrice"></div>
+                <div>
+                    <form method="post">
                     <input type="hidden" id="totalPriceInput" name="totalPriceInput" />
                     <button class="btn btn-primary" formaction="@Url.Action("CreateOrder", "Order")" formmethod="get" onclick="orderItems()">Продовжити</button>
                 </form>
             </div>
+            }
         </div>
     </section>
 </body>

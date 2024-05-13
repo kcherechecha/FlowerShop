@@ -7,6 +7,7 @@ function addItemToWishlist(itemId) {
         data: { itemId: itemId },
         success: function (response) {
             console.log(`${response} added to wishlist`);
+            openModal('Item added to wishlist');
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {
