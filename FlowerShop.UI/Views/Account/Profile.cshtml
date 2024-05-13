@@ -1,0 +1,35 @@
+﻿@model FlowerShop.UI.Models.User.UserVm
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+</head>
+
+<h1>Profile</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    <form method="post">
+        <button class="btn btn-primary" formaction="@Url.Action("Logout", "Account")" formmethod="get">Logout</button>
+    </form>
+</div>

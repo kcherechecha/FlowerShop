@@ -1,0 +1,37 @@
+﻿@model IEnumerable<FlowerShop.UI.Models.CustomBouquet.CustomBouquetVm>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+</head>
+
+<body>
+    <section class="section4" id="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1>My <span class="clrchange">Basket</span></h1>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-4" data-aos="fade-right">
+                        <div class="innerproductsection">
+                            <img src="data:image/jpeg;base64,@item.PhotoFile" alt="Image" />
+                            <div class="cartcontainer">
+                                <button class="wishlist" onclick="deleteItemFromBasket(`@item.Id`)"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                            <p>№ @item.Id</p>
+                            <p><i class="fa-solid fa-phone"></i> @item.PhoneNumber</p>
+                            <p>@item.UserDescription</p>
+                            <p>@item.RequestTime</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</body>
+</html>

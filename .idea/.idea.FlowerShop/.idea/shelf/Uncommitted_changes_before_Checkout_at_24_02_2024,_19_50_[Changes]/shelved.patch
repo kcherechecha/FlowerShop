@@ -1,0 +1,180 @@
+Index: FlowerShop.DAL/Data/FlowerDbContext.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Microsoft.EntityFrameworkCore;\nusing System.Reflection;\n\n\npublic class FlowerDbContext : DbContext, IFlowerDbContext\n{\n    public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options) { }\n    public DbSet<Basket> Baskets => Set<Basket>();\n\n    public DbSet<Bouquet> Bouquets => Set<Bouquet>();\n\n    public DbSet<BouquetBasket> BouquetBaskets => Set<BouquetBasket>();\n\n    public DbSet<BouquetWishlist> BouquetWishlists => Set<BouquetWishlist>();\n\n    public DbSet<Flower> Flowers => Set<Flower>();\n\n    public DbSet<FlowerBouquet> FlowerBouquets => Set<FlowerBouquet>();\n\n    public DbSet<Order> Orders => Set<Order>();\n\n    public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();\n\n    public DbSet<Wishlist> Wishlists => Set<Wishlist>();\n\n    protected override void OnModelCreating(ModelBuilder builder)\n    {\n        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());\n\n        base.OnModelCreating(builder);\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/FlowerShop.DAL/Data/FlowerDbContext.cs b/FlowerShop.DAL/Data/FlowerDbContext.cs
+--- a/FlowerShop.DAL/Data/FlowerDbContext.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ b/FlowerShop.DAL/Data/FlowerDbContext.cs	(date 1708718371214)
+@@ -5,12 +5,9 @@
+ public class FlowerDbContext : DbContext, IFlowerDbContext
+ {
+     public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options) { }
+-    public DbSet<Basket> Baskets => Set<Basket>();
+ 
+     public DbSet<Bouquet> Bouquets => Set<Bouquet>();
+ 
+-    public DbSet<BouquetBasket> BouquetBaskets => Set<BouquetBasket>();
+-
+     public DbSet<BouquetWishlist> BouquetWishlists => Set<BouquetWishlist>();
+ 
+     public DbSet<Flower> Flowers => Set<Flower>();
+Index: FlowerShop.DAL/Entities/Basket.cs
+===================================================================
+diff --git a/FlowerShop.DAL/Entities/Basket.cs b/FlowerShop.DAL/Entities/Basket.cs
+deleted file mode 100644
+--- a/FlowerShop.DAL/Entities/Basket.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ /dev/null	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
+@@ -1,7 +0,0 @@
+-public class Basket
+-{
+-    public Guid Id {get; set;}
+-    public Guid UserId {get; set;}
+-    public virtual ICollection<BouquetBasket>? BouquetBaskets {get; set;}
+-    public Order? Order {get; set;}
+-}
+\ No newline at end of file
+Index: FlowerShop.DAL/Entities/BouquetBasket.cs
+===================================================================
+diff --git a/FlowerShop.DAL/Entities/BouquetBasket.cs b/FlowerShop.DAL/Entities/BouquetBasket.cs
+deleted file mode 100644
+--- a/FlowerShop.DAL/Entities/BouquetBasket.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ /dev/null	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
+@@ -1,7 +0,0 @@
+-public class BouquetBasket
+-{
+-    public Guid BasketId {get; set;}
+-    public Guid BouquetId {get; set;}
+-    public Basket? Basket {get; set;}
+-    public Bouquet? Bouquet {get; set;}
+-}
+\ No newline at end of file
+Index: FlowerShop.DAL/Data/Configuration/BouquetBasketConfiguration.cs
+===================================================================
+diff --git a/FlowerShop.DAL/Data/Configuration/BouquetBasketConfiguration.cs b/FlowerShop.DAL/Data/Configuration/BouquetBasketConfiguration.cs
+deleted file mode 100644
+--- a/FlowerShop.DAL/Data/Configuration/BouquetBasketConfiguration.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ /dev/null	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
+@@ -1,22 +0,0 @@
+-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+-using Microsoft.EntityFrameworkCore;
+-
+-public class BouquetBasketConfiguration : IEntityTypeConfiguration<BouquetBasket>
+-{
+-    public void Configure(EntityTypeBuilder<BouquetBasket> builder)
+-    {
+-        builder.ToTable("BouquetBaskets");
+-
+-        builder.HasKey(bb => new { bb.BasketId, bb.BouquetId });
+-
+-        builder.HasOne(bb => bb.Basket)
+-            .WithMany(b => b.BouquetBaskets)
+-            .HasForeignKey(bb => bb.BasketId)
+-            .OnDelete(DeleteBehavior.Cascade);
+-
+-        builder.HasOne(bb => bb.Bouquet)
+-            .WithMany(b => b.BouquetBaskets)
+-            .HasForeignKey(bb => bb.BouquetId)
+-            .OnDelete(DeleteBehavior.Cascade);
+-    }
+-}
+Index: FlowerShop.DAL/Data/Configuration/BasketConfiguration.cs
+===================================================================
+diff --git a/FlowerShop.DAL/Data/Configuration/BasketConfiguration.cs b/FlowerShop.DAL/Data/Configuration/BasketConfiguration.cs
+deleted file mode 100644
+--- a/FlowerShop.DAL/Data/Configuration/BasketConfiguration.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ /dev/null	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
+@@ -1,20 +0,0 @@
+-using Microsoft.EntityFrameworkCore;
+-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+-
+-public class BasketConfiguration : IEntityTypeConfiguration<Basket>
+-{
+-    public void Configure(EntityTypeBuilder<Basket> builder)
+-    {
+-        builder.ToTable("Baskets");
+-
+-        builder.HasKey(b => b.Id);
+-
+-        builder.Property(b => b.UserId)
+-            .IsRequired();
+-
+-        builder.HasOne(b => b.Order)
+-            .WithOne(o => o.Basket)
+-            .HasForeignKey<Order>(o => o.BasketId)
+-            .OnDelete(DeleteBehavior.Cascade); 
+-    }
+-}
+\ No newline at end of file
+Index: FlowerShop.BLL/Models/BasketModel.cs
+===================================================================
+diff --git a/FlowerShop.BLL/Models/BasketModel.cs b/FlowerShop.BLL/Models/BasketModel.cs
+deleted file mode 100644
+--- a/FlowerShop.BLL/Models/BasketModel.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ /dev/null	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
+@@ -1,5 +0,0 @@
+-public class BasketModel
+-{
+-    public Guid Id {get; set;}
+-    public Guid UserId {get; set;}
+-}
+\ No newline at end of file
+Index: FlowerShop.BLL/FlowerShop.BLL.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk\">\n\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.AspNetCore\" Version=\"2.2.0\" />\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore\" Version=\"8.0.2\" />\n  </ItemGroup>\n  <ItemGroup>\n    <ProjectReference Include=\"..\\FlowerShop.DAL\\FlowerShop.DAL.csproj\" />\n  </ItemGroup>\n\n</Project>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/FlowerShop.BLL/FlowerShop.BLL.csproj b/FlowerShop.BLL/FlowerShop.BLL.csproj
+--- a/FlowerShop.BLL/FlowerShop.BLL.csproj	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ b/FlowerShop.BLL/FlowerShop.BLL.csproj	(date 1708718432392)
+@@ -6,8 +6,6 @@
+     <Nullable>enable</Nullable>
+   </PropertyGroup>
+   <ItemGroup>
+-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\FlowerShop.DAL\FlowerShop.DAL.csproj" />
+Index: FlowerShop.WebAPI/FlowerShop.WebAPI.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Microsoft.AspNetCore.OpenApi\" Version=\"8.0.2\" />\n    <PackageReference Include=\"Swashbuckle.AspNetCore\" Version=\"6.4.0\" />\n    <PackageReference Include=\"Microsoft.EntityFrameworkCore\" Version=\"8.0.2\" />\n    <PackageReference Include=\"Npgsql.EntityFrameworkCore.PostgreSQL\" Version=\"8.0.2\" />\n  </ItemGroup>\n  <ItemGroup>\n    <ProjectReference Include=\"..\\FlowerShop.DAL\\FlowerShop.DAL.csproj\" />\n  </ItemGroup>\n</Project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/FlowerShop.WebAPI/FlowerShop.WebAPI.csproj b/FlowerShop.WebAPI/FlowerShop.WebAPI.csproj
+--- a/FlowerShop.WebAPI/FlowerShop.WebAPI.csproj	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ b/FlowerShop.WebAPI/FlowerShop.WebAPI.csproj	(date 1708719430012)
+@@ -7,7 +7,6 @@
+   <ItemGroup>
+     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+   </ItemGroup>
+   <ItemGroup>
+Index: FlowerShop.BLL/Interfaces/IFlowerDbContext.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Microsoft.EntityFrameworkCore;\n\npublic interface IFlowerDbContext\n{\n    DbSet<Basket> Baskets {get;}\n    DbSet<Bouquet> Bouquets {get;}\n    DbSet<BouquetBasket> BouquetBaskets {get;}\n    DbSet<BouquetWishlist> BouquetWishlists {get;}\n    DbSet<Flower> Flowers {get;}\n    DbSet<FlowerBouquet> FlowerBouquets {get;}\n    DbSet<Order> Orders {get;}\n    DbSet<OrderStatus> OrderStatuses {get;}\n    DbSet<Wishlist> Wishlists {get;}\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/FlowerShop.BLL/Interfaces/IFlowerDbContext.cs b/FlowerShop.BLL/Interfaces/IFlowerDbContext.cs
+--- a/FlowerShop.BLL/Interfaces/IFlowerDbContext.cs	(revision b2189cd7b7f3eb0592e19a657d95f0a7e4075f5e)
++++ b/FlowerShop.BLL/Interfaces/IFlowerDbContext.cs	(date 1708718369325)
+@@ -2,9 +2,7 @@
+ 
+ public interface IFlowerDbContext
+ {
+-    DbSet<Basket> Baskets {get;}
+     DbSet<Bouquet> Bouquets {get;}
+-    DbSet<BouquetBasket> BouquetBaskets {get;}
+     DbSet<BouquetWishlist> BouquetWishlists {get;}
+     DbSet<Flower> Flowers {get;}
+     DbSet<FlowerBouquet> FlowerBouquets {get;}
