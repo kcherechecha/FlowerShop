@@ -26,9 +26,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _categoryService.GetAllAsync();
 
-            var categories = _mapper.Map<IEnumerable<CategoryVm>>(models);
-
-            return Ok(categories);
+            return Ok(models);
         }
 
         [HttpGet("{id}")]
@@ -36,9 +34,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _categoryService.GetById(id);
 
-            var category = _mapper.Map<CategoryVm>(model);
-
-            return Ok(category);
+            return Ok(model);
         }
 
         [HttpPost, Authorize(Roles = "Admin")]

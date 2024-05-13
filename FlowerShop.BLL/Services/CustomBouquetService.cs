@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
+using FlowerShop.BLL.Models.ViewModels;
 using FlowerShop.DAL.Data;
 using FlowerShop.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -41,20 +42,20 @@ namespace FlowerShop.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CustomBouquetModel>> GetAllAsync()
+        public async Task<IEnumerable<CustomBouquetVm>> GetAllAsync()
         {
             var entities = await _context.CustomBouquets.ToListAsync();
 
-            var models = _mapper.Map<IEnumerable<CustomBouquetModel>>(entities);
+            var models = _mapper.Map<IEnumerable<CustomBouquetVm>>(entities);
 
             return models;
         }
 
-        public async Task<CustomBouquetModel> GetById(Guid id)
+        public async Task<CustomBouquetVm> GetById(Guid id)
         {
             var entity = await _context.CustomBouquets.FindAsync(id);
 
-            var models = _mapper.Map<CustomBouquetModel>(entity);
+            var models = _mapper.Map<CustomBouquetVm>(entity);
 
             return models;
         }

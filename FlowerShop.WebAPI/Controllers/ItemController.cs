@@ -27,9 +27,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _itemService.GetAllAsync();
 
-            var items = _mapper.Map<IEnumerable<ItemVm>>(models);
-
-            return Ok(items);
+            return Ok(models);
         }
 
         [HttpGet("{id}")]
@@ -37,9 +35,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _itemService.GetById(id);
 
-            var item = _mapper.Map<ItemVm>(model);
-
-            return Ok(item);
+            return Ok(model);
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
@@ -92,9 +88,7 @@ namespace FlowerShop.WebAPI.Controllers
 
             var models = await _itemService.GetWishlistItem(userId);
 
-            var itemsList = _mapper.Map<IEnumerable<ItemListVm>>(models);
-
-            return Ok(itemsList);
+            return Ok(models);
         }
 
         [HttpPost("wishlist/{itemId}"), Authorize]
@@ -134,9 +128,7 @@ namespace FlowerShop.WebAPI.Controllers
 
             var models = await _itemService.GetItemInBasket(userId);
 
-            var itemList = _mapper.Map<IEnumerable<ItemListVm>>(models);
-
-            return Ok(itemList);
+            return Ok(models);
         }
 
         [HttpPost("bakset/{itemId}/{count}"), Authorize]
@@ -180,6 +172,21 @@ namespace FlowerShop.WebAPI.Controllers
             }
 
             await _itemService.UpdateItemCountInBasket(userId, itemId, count);
+
+            return Ok();
+        }
+
+        [HttpPost("wishlist-create")]
+        public async Task<ActionResult> CreateWishlist()
+        {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if(userId == Guid.Empty)
+            {
+                return BadRequest("Error creatig wishlist");
+            }
+
+            await _itemService.CreateWishlist(userId);
 
             return Ok();
         }

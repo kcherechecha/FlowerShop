@@ -27,9 +27,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _orderService.GetAllAsync();
 
-            var orders = _mapper.Map<OrderVm>(models);
-
-            return Ok(orders);
+            return Ok(models);
         }
 
         [HttpGet("user"), Authorize]
@@ -39,9 +37,7 @@ namespace FlowerShop.WebAPI.Controllers
 
             var models = await _orderService.GetByUser(userId);
 
-            var orders = _mapper.Map<OrderVm>(models);
-
-            return Ok(orders);
+            return Ok(models);
         }
 
         [HttpGet("{id}"), Authorize]
@@ -49,9 +45,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _orderService.GetById(id);
 
-            var order = _mapper.Map<OrderVm>(model);
-
-            return Ok(order);
+            return Ok(model);
         }
 
         [HttpPost, Authorize]
@@ -59,16 +53,14 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = OrderModel.Create(Guid.NewGuid(), input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
+            var model = OrderModel.Create(Guid.NewGuid(), input.OrderAddress,input.PhoneNumber, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
 
-            if(string.IsNullOrEmpty(model.Error))
+            if(!string.IsNullOrEmpty(model.Error))
             {
                 return BadRequest(model.Error);
             }
 
             var id = await _orderService.AddAsync(model.Item1);
-
-            await _orderService.AddItemToOrder(id, userId);
 
             return Ok(id);
         }
@@ -91,7 +83,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = OrderModel.Create(input.Id, input.OrderAddress, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
+            var model = OrderModel.Create(input.Id, input.OrderAddress, input.PhoneNumber, input.OrderPrice, input.OrderTime, userId, input.OrderStatusId);
 
             if (string.IsNullOrEmpty(model.Error))
             {
@@ -99,6 +91,21 @@ namespace FlowerShop.WebAPI.Controllers
             }
 
             await _orderService.UpdateAsync(model.Item1);
+
+            return Ok();
+        }
+
+        [HttpPatch("item/count"), Authorize]
+        public async Task<ActionResult> UpdateItemOrderCount([FromBody] IEnumerable<ItemOrdersCountUpdate> itemOrders)
+        {
+            var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            if (itemOrders.Count() < 1)
+            {
+                return BadRequest("Erorr updating order count");
+            }
+
+            await _orderService.ChangeItemCount(itemOrders, userId);
 
             return Ok();
         }

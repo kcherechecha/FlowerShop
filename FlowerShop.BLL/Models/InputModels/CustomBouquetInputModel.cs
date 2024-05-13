@@ -10,8 +10,9 @@ namespace FlowerShop.BLL.Models.InputModels
     public class CustomBouquetInputModel
     {
         public Guid Id { get; set; }
-        public IFormFile? Photo { get; set; }
+        public byte[]? Photo { get; set; }
         public string? UserDescription { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime RequestTime { get; private set; } = DateTime.UtcNow;
     }
 }

@@ -18,6 +18,9 @@ namespace FlowerShop.DAL.Data.Configuration
             builder.Property(o => o.OrderAddress)
                 .HasMaxLength(255);
 
+            builder.Property(o => o.PhoneNumber)
+                .HasMaxLength(12);
+
             builder.Property(o => o.OrderPrice)
                 .IsRequired();
 

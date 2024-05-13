@@ -1,0 +1,242 @@
+﻿@model IEnumerable<FlowerShop.UI.Models.ItemListVm>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ecommerce Flower Shop</title>
+</head>
+
+
+<body>
+    <section class="section1" id="top">
+        <div class="container">
+            <div class="row" data-aos="fade-right">
+                <div class="col-sm-12">
+                    <h1>Fresh Flowers</h1>
+                    <h2>Natural & Beautiful Flowers</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    <a href="#" class="links">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section2" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1 class="mainheading"><span class="clrchange">About</span> Us</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" data-aos="fade-right">
+                    <img src="/images/section2img1.jpg" alt="Intro Image" id="img-1">
+                    <div class="clrchangeback">
+                        <h3>Best Flower Sellers</h3>
+                    </div>
+                </div>
+                <div class="col-sm-6" data-aos="fade-left">
+                    <h2>Why Choose Us</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section3">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3" data-aos="fade-right">
+                    <div class="innercol">
+                        <div class="txtwithicon">
+                            <div class="iconcol">
+                                <i class="fa-solid fa-cart-flatbed"></i>
+                            </div>
+                            <div class="txtcol">
+                                <h4>Free Shipping</h4>
+                                <p>On All Orders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" data-aos="fade-down">
+                    <div class="innercol">
+                        <div class="txtwithicon">
+                            <div class="iconcol">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                            </div>
+                            <div class="txtcol">
+                                <h4>10 Days Returns</h4>
+                                <p>Moneyback Guarantee</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" data-aos="fade-up">
+                    <div class="innercol">
+                        <div class="txtwithicon">
+                            <div class="iconcol">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <div class="txtcol">
+                                <h4>Offer & Gift</h4>
+                                <p>On All Orders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" data-aos="fade-left">
+                    <div class="innercol">
+                        <div class="txtwithicon">
+                            <div class="iconcol">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+                            <div class="txtcol">
+                                <h4>Secure Payment</h4>
+                                <p>Protected By Paypal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section4" id="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1>Latest <span class="clrchange">Products</span></h1>
+                </div>
+            </div>
+            <div class="row">
+                @foreach(var item in Model)
+                {
+                <div class="col-sm-4" data-aos="fade-right">
+                    <div class="innerproductsection">
+                            <img src="data:image/jpeg;base64,@item.PhotoFile" alt="Image" />
+                            @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
+                            {
+                                <div class="cartcontainer">
+                                    <button class="wishlist" onclick="addItemToWishlist(`@item.Id`)"><i class="fa-solid fa-heart"></i></button>
+                                    <button class="btn" onclick="addItemToBasket(`@item.Id`)">Add To Card<i class="fa-solid fa-cart-plus"></i></button>
+                                </div>
+                            }
+                        <h2>@item.Name</h2>
+                        <h1 class="price"><span class="clrchange">@item.Price грн</span></h1>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="section6" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1 class="mainheading">
+                        <span class="clrchange">
+                            Contact
+                        </span>
+                        Us
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6" data-aos="fade-right">
+                    <form method="post" action="#">
+                        <input type="text" placeholder="name">
+                        <input type="email" placeholder="email">
+                        <input type="number" placeholder="number">
+                        <textarea name="message" id="#" placeholder="message" cols="30" rows="10"></textarea>
+                        <button class="links">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-sm-6" data-aos="fade-left">
+                    <img src="/images/contactimg1.png" alt="Contact img" class="contactimg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3 class="footerheadings">Quick Links</h3>
+                    <ul>
+                        <li><a href="#about" class="links">About</a></li>
+                        <li><a href="#product" class="links">Products</a></li>
+                        <li><a href="#contact" class="links">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="footerheadings">Extra Links</h3>
+                    <ul>
+                        <li><a asp-controller="Order" asp-action="GetUserOrders">My Orders</a></li>
+                        <li><a asp-controller="Account" asp-action="Profile">My Account</a></li>
+                        <li><a asp-controller="Item" asp-action="ShowWishlist">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="footerheadings">Locations</h3>
+                    <ul>
+                        <li><a href="javascript:;" class="links">Ukraine</a></li>
+                        <li><a href="javascript:;" class="links">USA</a></li>
+                        <li><a href="javascript:;" class="links">Canada</a></li>
+                        <li><a href="javascript:;" class="links">China</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="footerheadings">Contact Info</h3>
+                    <ul>
+                        <li><a href="tel:+92-3182386144" class="links">+380800700111</a></li>
+                        <li>
+                            <a href="mailto:kateflowershop@gmail.com" class="links">kateflowershop@gmail.com</a>
+                        </li>
+                        <li><a href="javascript:;" class="links">Kyiv - Ukraine</a></li>
+                    </ul>
+                    <img src="/images/payment.png" alt="" class="paymentimg">
+                </div>
+            </div>
+            <div class="row copy-right">
+                <div class="col-sm-12">
+                    <p>Created By <span class="clrchange">Kateryna Cherechecha</span> | All Rights Reserved</p>
+                    <div class="topbtn">
+                        <a href="#top" class="topbtninner"><i class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+
+<script src="~/js/item/addItemToBasket.js"></script>
+<script src="~/js/item/addItemToWishlist.js"></script>
+<script src="~/js/item/showMessage.js"></script>

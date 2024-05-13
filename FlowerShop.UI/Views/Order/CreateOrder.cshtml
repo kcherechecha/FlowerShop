@@ -1,0 +1,36 @@
+﻿@model FlowerShop.UI.Models.Order.OrderInputModel
+
+@{
+    ViewData["Title"] = "CreateOrder";
+}
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+</head>
+
+<body>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrder">
+            <div class="form-group">
+                <label asp-for="OrderAddress" class="control-label"></label>
+                <input asp-for="OrderAddress" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <input type="hidden" asp-for="OrderPrice" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

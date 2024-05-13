@@ -15,6 +15,9 @@ namespace FlowerShop.DAL.Data.Configuration
             builder.Property(c => c.Photo)
                 .HasColumnType("bytea");
 
+            builder.Property(c => c.PhoneNumber)
+                .HasMaxLength(12);
+
             builder.Property(c => c.UserId)
                 .IsRequired();
 

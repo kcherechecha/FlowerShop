@@ -43,6 +43,11 @@ namespace FlowerShop.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
                     b.Property<byte[]>("Photo")
                         .HasColumnType("bytea");
 
@@ -93,15 +98,27 @@ namespace FlowerShop.DAL.Migrations
 
             modelBuilder.Entity("FlowerShop.DAL.Entities.ItemOrder", b =>
                 {
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("ItemCount")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("OrderId", "ItemId");
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("ItemOrders", (string)null);
                 });
@@ -139,6 +156,11 @@ namespace FlowerShop.DAL.Migrations
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -200,8 +222,7 @@ namespace FlowerShop.DAL.Migrations
                     b.HasOne("FlowerShop.DAL.Entities.Order", "Order")
                         .WithMany("ItemOrders")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Item");
 

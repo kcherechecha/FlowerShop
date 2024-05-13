@@ -27,9 +27,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var models = await _customBouquetService.GetAllAsync();
 
-            var customBouquets = _mapper.Map<IEnumerable<CustomBouquetVm>>(models);
-
-            return Ok(customBouquets);
+            return Ok(models);
         }
 
         [HttpGet("{id}"), Authorize]
@@ -37,17 +35,15 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var model = await _customBouquetService.GetById(id);
 
-            var customBouquets = _mapper.Map<CustomBouquetVm>(model);
-
-            return Ok(customBouquets);
+            return Ok(model);
         }
 
         [HttpPost, Authorize]
-        public async Task<ActionResult> Add([FromForm] CustomBouquetInputModel input)
+        public async Task<ActionResult> Add([FromBody] CustomBouquetInputModel input)
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = await CustomBouquetModel.Create(Guid.NewGuid(), input.Photo, userId, input.UserDescription, input.RequestTime);
+            var model = await CustomBouquetModel.Create(Guid.NewGuid(), input.Photo, userId, input.UserDescription, input.PhoneNumber, input.RequestTime);
 
             if(!string.IsNullOrEmpty(model.Error))
             {
@@ -64,7 +60,7 @@ namespace FlowerShop.WebAPI.Controllers
         {
             var userId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            var model = await CustomBouquetModel.Create(input.Id, input.Photo, userId, input.UserDescription, input.RequestTime);
+            var model = await CustomBouquetModel.Create(input.Id, input.Photo, userId, input.UserDescription, input.PhoneNumber, input.RequestTime);
 
             if (!string.IsNullOrEmpty(model.Error))
             {
