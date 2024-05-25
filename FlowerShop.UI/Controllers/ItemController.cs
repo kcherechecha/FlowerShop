@@ -70,6 +70,22 @@ namespace FlowerShop.UI.Controllers
             }
         }
 
+        public async Task<IActionResult> DeleteItem(Guid id)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            var response = await _httpClient.DeleteAsync($"api/item/{id}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+        }
+
         public async Task<IActionResult> AddItemToBasket(Guid itemId, int count = 1)
         {
             if(itemId != Guid.Empty && count > 0)
