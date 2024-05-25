@@ -57,6 +57,18 @@ namespace FlowerShop.BLL.Services
 
             return model;
         }
+        
+        public async Task<IEnumerable<ItemListVm>> GetByCategoryAsync(string category)
+        {
+            var entities = await _context.Items
+                .Include(e => e.Category)
+                .Where(e => e.Category.Name == category)
+                .ToListAsync();
+            
+            var model = _mapper.Map<IEnumerable<ItemListVm>>(entities);
+
+            return model;
+        }
 
         public async Task<IEnumerable<ItemListVm>> GetLatestAsync(int count)
         {

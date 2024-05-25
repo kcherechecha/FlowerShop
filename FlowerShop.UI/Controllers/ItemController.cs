@@ -18,6 +18,22 @@ namespace FlowerShop.UI.Controllers
         {
             _httpClient = httpClientFactory.CreateClient("FlowerShopApiClient");
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> ShowFlowers()
+        {
+            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item/category/Flower");
+
+            return View(models);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> ShowBouquets()
+        {
+            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item/category/Bouquet");
+
+            return View(models);
+        }
 
         [HttpGet]
         public async Task<IActionResult> CreateItem()

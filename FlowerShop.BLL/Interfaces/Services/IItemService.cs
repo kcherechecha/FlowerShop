@@ -19,6 +19,7 @@ namespace FlowerShop.BLL.Interfaces.Services
         Task DeleteItemFromWishlist(Guid itemId, Guid userId);
         Task<IEnumerable<ItemListVm>> GetAllAsync();
         Task<IEnumerable<ItemListVm>> GetLatestAsync(int count);
+        Task<IEnumerable<ItemListVm>> GetByCategoryAsync(string category);
         Task<ItemVm> GetById(Guid id);
         Task<IEnumerable<ItemListVm>> GetItemInBasket(Guid UserId);
         Task<IEnumerable<ItemListVm>> GetWishlistItem(Guid UserId);

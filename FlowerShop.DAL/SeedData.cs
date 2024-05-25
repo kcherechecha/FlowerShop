@@ -19,8 +19,8 @@ namespace FlowerShop.DAL
 
             var categories = new List<Category>()
             {
-                new Category { Id =  Guid.NewGuid(), Name = "Category1" },
-                new Category { Id =  Guid.NewGuid(), Name = "Category2" },
+                new Category { Id =  Guid.NewGuid(), Name = "Flower" },
+                new Category { Id =  Guid.NewGuid(), Name = "Bouquet" },
             };
 
             var items = new List<Item>()
@@ -35,13 +35,13 @@ namespace FlowerShop.DAL
                     CategoryId = categories[0].Id, Price = 30, Photo = File.ReadAllBytes($"{imagePath}/Chrysanthemum.jpg")},
 
                 new Item { Id = Guid.NewGuid(), Name = "Георгіна", Description = "Георгіни вражають своєю різноманітністю кольорів та форм квіток, від яскравих до пастельних",
-                    CategoryId = categories[1].Id, Price = 40, Photo = File.ReadAllBytes($"{imagePath}/Georgina.jpg")},
+                    CategoryId = categories[0].Id, Price = 40, Photo = File.ReadAllBytes($"{imagePath}/Georgina.jpg")},
 
                 new Item { Id = Guid.NewGuid(), Name = "Волошка", Description = "Це скромна квітка, але вона символізує простоту та ніжність, часто зустрічається в дикій природі",
-                    CategoryId = categories[1].Id, Price = 20, Photo = File.ReadAllBytes($"{imagePath}/Cornflower.jpg")},
+                    CategoryId = categories[0].Id, Price = 20, Photo = File.ReadAllBytes($"{imagePath}/Cornflower.jpg")},
 
                 new Item { Id = Guid.NewGuid(), Name = "Орхідея", Description = "Елегантна та загадкова, орхідея представляє різноманітність форм і кольорів і вважається символом краси та розкіші",
-                    CategoryId = categories[1].Id, Price = 200, Photo = File.ReadAllBytes($"{imagePath}/Orchid.jpg")},
+                    CategoryId = categories[0].Id, Price = 200, Photo = File.ReadAllBytes($"{imagePath}/Orchid.jpg")},
             };
 
             var orderStatuses = new List<OrderStatus>()

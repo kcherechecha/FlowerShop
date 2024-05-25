@@ -42,6 +42,12 @@
                                     <li class="nav-item active">
                                         <a class="nav-link" asp-controller="Home" asp-action="Index">Головна</a>
                                     </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" asp-controller="Item" asp-action="ShowFlowers">Квіти</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" asp-controller="Item" asp-action="ShowBouquets">Букети</a>
+                                    </li>
                                     @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
                                     {
                                         <li class="nav-item">

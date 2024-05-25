@@ -37,6 +37,14 @@ namespace FlowerShop.WebAPI.Controllers
 
             return Ok(models);
         }
+        
+        [HttpGet("category/{category}")]
+        public async Task<ActionResult<IEnumerable<ItemVm>>> GetByCategory(string category)
+        {
+            var models = await _itemService.GetByCategoryAsync(category);
+
+            return Ok(models);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemVm>> GetById([FromRoute] Guid id)
