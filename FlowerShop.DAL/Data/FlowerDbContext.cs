@@ -7,8 +7,9 @@ namespace FlowerShop.DAL.Data
 {
     public class FlowerDbContext : DbContext, IFlowerDbContext
     {
-        public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options) 
+        public FlowerDbContext(DbContextOptions<FlowerDbContext> options) : base(options)
         {
+            Database.EnsureCreated();
             SeedData.Initialize(this);
         }
 

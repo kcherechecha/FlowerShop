@@ -16,7 +16,7 @@ namespace FlowerShop.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item");
+            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item/latest");
 
             return View("Index", models);
         }
