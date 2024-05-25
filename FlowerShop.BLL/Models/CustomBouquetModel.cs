@@ -53,7 +53,7 @@ namespace FlowerShop.BLL.Models
                 error = "Description more than 1000 symbols";
             }
 
-            if (string.IsNullOrWhiteSpace(phoneNumber) || (phoneNumber.Length != 12 && phoneNumber.Length != 10))
+            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length != 12)
             {
                 error = "Phone number is empty or incorrect format";
             }

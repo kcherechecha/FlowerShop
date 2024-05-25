@@ -29,6 +29,22 @@ namespace FlowerShop.WebAPI.Controllers
 
             return Ok(models);
         }
+        
+        [HttpGet("latest")]
+        public async Task<ActionResult<IEnumerable<ItemVm>>> GetLatest()
+        {
+            var models = await _itemService.GetLatestAsync(6);
+
+            return Ok(models);
+        }
+        
+        [HttpGet("category/{category}")]
+        public async Task<ActionResult<IEnumerable<ItemVm>>> GetByCategory(string category)
+        {
+            var models = await _itemService.GetByCategoryAsync(category);
+
+            return Ok(models);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemVm>> GetById([FromRoute] Guid id)
@@ -39,7 +55,7 @@ namespace FlowerShop.WebAPI.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Guid>> Add([FromForm] ItemInputModel input)
+        public async Task<ActionResult<Guid>> Add(ItemInputModel input)
         {
             var model = await ItemModel.Create(Guid.NewGuid(), input.Name, input.Photo, input.Description, input.Price, input.CategoryId);
 

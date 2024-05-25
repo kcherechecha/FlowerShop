@@ -1,7 +1,12 @@
-﻿using FlowerShop.UI.Models;
+﻿using System.Collections;
+using FlowerShop.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using FlowerShop.UI.Common.Extensions;
+using FlowerShop.UI.Models.Category;
+using FlowerShop.UI.Models.Item;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FlowerShop.UI.Controllers
 {
@@ -12,6 +17,73 @@ namespace FlowerShop.UI.Controllers
         public ItemController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("FlowerShopApiClient");
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> ShowFlowers()
+        {
+            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item/category/Flower");
+
+            return View(models);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> ShowBouquets()
+        {
+            var models = await _httpClient.GetFromJsonAsync<IEnumerable<ItemListVm>>("api/item/category/Bouquet");
+
+            return View(models);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateItem()
+        {
+            var categories = await _httpClient.GetFromJsonAsync<IEnumerable<CategoryVm>>("api/category");
+            
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateItem(InputItemModel model)
+        {
+            model.Photo = await model.PhotoFile.ToByteArrayAsync();
+            
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            var response = await _httpClient.PostAsJsonAsync("api/item", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+
+                var errorResponse = JsonSerializer.Deserialize<string>(responseContent);
+
+                ModelState.AddModelError("", errorResponse);
+
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> DeleteItem(Guid id)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AccessToken"]);
+
+            var response = await _httpClient.DeleteAsync($"api/item/{id}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode);
+            }
         }
 
         public async Task<IActionResult> AddItemToBasket(Guid itemId, int count = 1)

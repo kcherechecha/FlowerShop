@@ -1,0 +1,51 @@
+@model IEnumerable<FlowerShop.UI.Models.ItemListVm>;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/form.css" />
+</head>
+<body>
+<div>
+    <section class="section4" id="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" data-aos="fade-down">
+                    <h1><span class="clrchange">Flowers</span></h1>
+                </div>
+            </div>
+            <div class="row">
+                @foreach(var item in Model)
+                {
+                    <div class="col-sm-4" data-aos="fade-right">
+                        <div class="innerproductsection">
+                            <img src="data:image/jpeg;base64,@item.PhotoFile" alt="Image" />
+                            @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
+                            {
+                                <div class="cartcontainer">
+                                    <button class="wishlist" onclick="addItemToWishlist(`@item.Id`)"><i class="fa-solid fa-heart"></i></button>
+                                    <button class="btn" onclick="addItemToBasket(`@item.Id`)">Add To Card<i class="fa-solid fa-cart-plus"></i></button>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "Admin")
+                            {
+                                <div class="cartcontainer">
+                                    <button class="btn" onclick="deleteItem(`@item.Id`)"><i class="fa-solid fa-times"></i></button>
+                                </div>
+                            }
+                            <h2>@item.Name</h2>
+                            <h1 class="price"><span class="clrchange">@item.Price грн</span></h1>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+
+<script src="js/item/deleteItem.js"></script>
+<script src="~/js/item/addItemToBasket.js"></script>
+<script src="~/js/item/addItemToWishlist.js"></script>
+<script src="~/js/item/showMessage.js"></script>

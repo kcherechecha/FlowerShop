@@ -42,6 +42,12 @@
                                     <li class="nav-item active">
                                         <a class="nav-link" asp-controller="Home" asp-action="Index">Головна</a>
                                     </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" asp-controller="Item" asp-action="ShowFlowers">Квіти</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link" asp-controller="Item" asp-action="ShowBouquets">Букети</a>
+                                    </li>
                                     @if (!string.IsNullOrEmpty(Context.Request.Cookies["AccessToken"]) && !string.IsNullOrEmpty(Context.Request.Cookies["Role"]) && Context.Request.Cookies["Role"] == "User")
                                     {
                                         <li class="nav-item">
@@ -58,6 +64,9 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" asp-controller="CustomBouquet" asp-action="GetCustomBouquets">Власні букети</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Item" asp-action="CreateItem">Додати товар</a>
                                         </li>
                                     }
                                 </ul>
@@ -107,7 +116,6 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/showNotification.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

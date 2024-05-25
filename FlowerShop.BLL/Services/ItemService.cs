@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using FlowerShop.BLL.Interfaces.Services;
 using FlowerShop.BLL.Models;
 using FlowerShop.BLL.Models.ViewModels;
@@ -53,6 +54,27 @@ namespace FlowerShop.BLL.Services
             var entity = await _context.Items.ToListAsync();
 
             var model = _mapper.Map<IEnumerable<ItemListVm>>(entity);
+
+            return model;
+        }
+        
+        public async Task<IEnumerable<ItemListVm>> GetByCategoryAsync(string category)
+        {
+            var entities = await _context.Items
+                .Include(e => e.Category)
+                .Where(e => e.Category.Name == category)
+                .ToListAsync();
+            
+            var model = _mapper.Map<IEnumerable<ItemListVm>>(entities);
+
+            return model;
+        }
+
+        public async Task<IEnumerable<ItemListVm>> GetLatestAsync(int count)
+        {
+            var entities = await _context.Items.Take(count).ToListAsync();
+            
+            var model = _mapper.Map<IEnumerable<ItemListVm>>(entities);
 
             return model;
         }

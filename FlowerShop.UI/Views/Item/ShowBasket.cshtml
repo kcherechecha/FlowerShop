@@ -23,7 +23,7 @@
                             <div class="cartcontainer">
                                 <button class="wishlist" onclick="deleteItemFromBasket(`@item.Id`)"><i class="fa-solid fa-times"></i></button>
                             </div>
-                            <input type="number" class="item-quantity" value="1" min="1" max="1000" onchange="updateTotalPrice()" />
+                            <input type="number" class="item-quantity" value="1" min="1" max="1000" onchange="updateTotalPrice()" oninput="validateQuantity(this)" />
                             <h2>@item.Name</h2>
                             <h1 class="price"><span class="clrchange">@item.Price грн</span></h1>
                         </div>

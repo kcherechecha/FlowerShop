@@ -6,7 +6,7 @@
         {
             services.AddHttpClient("FlowerShopApiClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44383/");
+                client.BaseAddress = new Uri("http://localhost:5264/");
             });
 
             return services;
